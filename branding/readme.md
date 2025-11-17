@@ -1,0 +1,1 @@
+Below logo/icon can be used by the Apps that are integrating via APIs.
