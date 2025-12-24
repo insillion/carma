@@ -176,6 +176,6 @@ All APIs follow REST standards and communicate using **JSON**.
 |3|[Quote-Create](./broker/03-quote-create.md)| Quote Create Request & Response|
 |4|[Quote Update / Save ](./broker/04-quote-update-save.md)| View Quote Update / Save  Request & Response|
 |5|[Quote Finalize](./broker/05-quote-finalize.md)| View Quote Finalize Request & Response|
-|6|[Quote Assign To US](./broker/06-quote-assign-to-uw.md)| Quote Assign To UW Request & Response|
+|6|[Quote Assign To UW](./broker/06-quote-assign-To-UW.md)| Quote Assign To UW Request & Response|
 |7|[View Quote](./broker/07-view-quote.md)| View Quote Request & Response|
 
