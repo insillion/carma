@@ -1,4 +1,4 @@
-### API Endpoint: Auth API
+### 01-Auth
 
 This `auth` endpoint allows users to authenticate and obtain access to our Insurance policy issuance system.
 

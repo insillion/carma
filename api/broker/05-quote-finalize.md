@@ -1,4 +1,4 @@
-# 2C: Finalize Quote
+# 05-Quote-Finalize
 
 ## Overview
 
@@ -16,7 +16,7 @@ This indicates that the quote is considered **ready on our end**.
 
 ## Key Difference: Update Quote vs Finalize Quote
 
-| Aspect | 2B: Update Quote | 2C: Finalize Quote |
+| Aspect | 04: Quote - Update/Save | 05: Quote - Finalize |
 | --- | --- | --- |
 | **quote_id in payload** | ✅ Required | ✅ Required |
 | **Result** | Updates existing quote | Locks quote (immutable) |
@@ -29,7 +29,7 @@ This indicates that the quote is considered **ready on our end**.
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `quote_id` | String/Number | Yes | The quote ID to finalize (from step 2A or 2B) |
+| `quote_id` | String/Number | Yes | The quote ID to finalize (from step 03 or 04) |
 | `finalize` | Number | Yes | Set to `1` to finalize the quote |
 
 ### Example Request Body
@@ -58,21 +58,22 @@ This indicates that the quote is considered **ready on our end**.
 
 ```
 ┌─────────────────┐
-│  2A: New Quote  │  (Creates quote, generates quote_id)
+│  03: Quote Create  │  (Creates quote, generates quote_id)
 └────────┬────────┘
          ▼
 ┌─────────────────────┐
-│ 2B: Update/Save     │  (Can be called multiple times)
-│     Quote           │
+│ 04: Quote Update/Save     │  (Can be called multiple times)
+│                     │
 └────────┬────────────┘
          ▼
 ┌─────────────────┐
-│ 2C: Finalize    │  ◄── You are here
-│     Quote       │      (One-time action, makes quote immutable)
+│ 05: Quote Finalize    │  ◄── You are here
+│                │      (One-time action, makes quote immutable)
 └────────┬────────┘
          ▼
 ┌─────────────────┐
-│ 3A: Assign      │  (Next step: Assign policy)
+│ 06: Quote 
+|  Assign To UW  │  (Next step: Assign Quote)
 └─────────────────┘
 
  ```
@@ -84,8 +85,8 @@ This indicates that the quote is considered **ready on our end**.
 | Quote data is complete and verified | ✅ Yes |
 | Ready to proceed to quote assignment | ✅ Yes |
 | Need to lock quote to prevent changes | ✅ Yes |
-| Still making changes to quote | ❌ No - Use 2B: Update Quote |
-| Creating a new quote | ❌ No - Use 2A: New Quote |
+| Still making changes to quote | ❌ No - Use 04: Quote Update |
+| Creating a new quote | ❌ No - Use 03: Quote Create |
 
 ## Important Notes
 
@@ -95,6 +96,6 @@ This indicates that the quote is considered **ready on our end**.
 
 ⚠️ **Finalize Flag**: The `finalize` parameter must be set to `1` to confirm the finalization action.
 
-⚠️ **Next Step Required**: After finalization, proceed to step 3A (Assign) to complete the policy issuance workflow.
+⚠️ **Next Step Required**: After finalization, proceed to step 06 (Assign To UW) to complete the policy issuance workflow.
 
-⚠️ **No Updates After**: If changes are needed after finalization, you must create a new quote using step 2A.
+⚠️ **No Updates After**: If changes are needed after finalization, you must create a new quote using step 03.

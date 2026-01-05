@@ -1,4 +1,4 @@
-# 2B: Update/Save Quote - Update Existing Quote
+# 04-Quote-Update-Save - Update Existing Quote
 
 ## Overview
 
@@ -17,7 +17,7 @@ The Update/Save Quote endpoint **updates an existing quote** in the system by pa
 
 ## Key Difference: New Quote vs Update Quote
 
-| Aspect | 2A: New Quote | 2B: Update Quote |
+| Aspect | 03: Quote Create | 04: Quote - Update/Save |
 | --- | --- | --- |
 | `quote_id` in payload | ❌ Not included | ✅ **Required** |
 | Result | Creates new quote in system | Updates existing quote |
@@ -86,16 +86,16 @@ All fields from the original quote can be updated:
 
 ```
 ┌─────────────────┐
-│  2A: New Quote  │  (Creates quote, generates quote_id)
+│  03-Quote Create  │  (Creates quote, generates quote_id)
 └────────┬────────┘
          ▼
 ┌─────────────────────┐
-│ 2B: Update/Save     │  ◄── You are here
-│     Quote           │      (Can be called multiple times)
+│ 04-Quote Update/Save  │  ◄── You are here
+│                       │      (Can be called multiple times)
 └────────┬────────────┘
          ▼
 ┌─────────────────┐
-│ 2C: Finalize    │
+│ 05-Quote Finalize │
 └─────────────────┘
 
  ```
@@ -160,7 +160,7 @@ All fields from the original quote can be updated:
 | Adjusting sum insured amounts | ✅ Yes |
 | Adding/removing locations | ✅ Yes |
 | Changing policy start date | ✅ Yes |
-| Creating a brand new quote | ❌ No - Use 2A: New Quote |
+| Creating a brand new quote | ❌ No - Use 02-Quote Create |
 | Quote already finalized | ❌ No - Cannot update finalized quotes |
 
 ---
@@ -175,4 +175,4 @@ All fields from the original quote can be updated:
 
 ⚠️ **Multiple Updates:** You can call this endpoint multiple times before finalizing. Each call updates the quote with the latest data.
 
-⚠️ **Finalized Quotes:** Once a quote is finalized (2C), it cannot be updated. Create a new quote if changes are needed.
+⚠️ **Finalized Quotes:** Once a quote is finalized (05), it cannot be updated. Create a new quote if changes are needed.
