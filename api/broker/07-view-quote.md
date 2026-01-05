@@ -1,41 +1,39 @@
-### API Endpoint: View Quote
+# View Quote
 
-This endpoint retrieves the details of a specific insurance policy based on the given `quote_id`.
+## Overview
 
-### Request
+This endpoint retrieves the details of a specific insurance policy based on the given quote_id.
 
-- **Method**: GET
-    
-- **URL**: `{{base_url}}/api/v1/carma/view_quote/quote?quote_id=string`
-    
+## Endpoint Details
 
-#### Query Parameters
-    You can take the System Generated tag values from last quote api call.
+| Property | Value |
+| --- | --- |
+| **Method** | `GET` |
+| **URL** | `{{host}}/api/v1/carma/view_quote/quote?quote_id=quote_id`  <br>Example : quote_id- Q000000001015 |
+| **Authentication** | Required - `in-auth-token: {{token}}` |
+| **Content-Type** | `application/json` |
 
-- `quote_id` (string)(System Generated): The unique identifier of the policy you wish to retrieve. This parameter is required.
-    
+## Response Structure
 
-### Response
+### Success Response (Status: 200)
 
-The response will return a JSON object containing the status of the request and the details of the requested policy.
+``` json
+{
+    "status": 0,
+    "txt": "",
+    "data": {
+        "quote_id": "Q000000001015",
+        "policy_id": "P000000001015",
+        "customer_details": { ... },
+        "total_tax": 500,
+        "premium_value": 3000,
+        "total_amount": "3500.00",
+        "source": "API"
+    }
+}
 
-#### Sample Response Structure
+ ```
 
-- **status** (integer): Indicates the success or failure of the request. A value of `0` typically indicates success.
-    
-- **txt** (string): A text field that may contain additional information about the request status (usually empty).
-    
-- **data** (array): An array containing the policy details, where each policy object may include the following fields:
-    
-    - `quote_id` (string): The identifier for the quote.
-        
-    - `product_id` (string): The identifier of the product associated with the policy.
-            
-    - `customer_id` (string): The ID of the customer associated with the policy.
-                
+## Notes
 
-### Notes
-
-- Ensure that the `policy_id` parameter is valid to receive the appropriate policy details.
-        
-- The structure of the response allows for extensibility, meaning additional fields may be included in future updates.
+- Ensure the `quote_id` exists in the system before making the request

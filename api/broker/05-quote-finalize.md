@@ -1,155 +1,100 @@
-### API Endpoint: To finalize quote details and refer to UW
+# 2C: Finalize Quote
+
+## Overview
 
 Although this API is named **Finalize**, the quote can still be updated later if business rules permit.  
 This indicates that the quote is considered **ready on our end**.
 
-#### Request Format
+## Endpoint Details
 
-- **Method**: POST
-    
-- **URL**: `{{base_url}}/api/v1/carma/quote_finalize`
-    
-- **Content-Type**: application/json
-    
+| Property | Value |
+| --- | --- |
+| **Method** | POST |
+| **URL** | `{{host}}/api/v1/carma/quote_finalize` |
+| **Authentication** | Required - `in-auth-token: {{token}}` |
+| **Content-Type** | application/json |
 
-#### Sample Request Body
+## Key Difference: Update Quote vs Finalize Quote
 
-This document outlines the fields present in the quote/policy JSON object, providing a description of each field and its expected data type.
+| Aspect | 2B: Update Quote | 2C: Finalize Quote |
+| --- | --- | --- |
+| **quote_id in payload** | ✅ Required | ✅ Required |
+| **Result** | Updates existing quote | Locks quote (immutable) |
+| **Can be called multiple times** | ✅ Yes | ❌ No (one-time action) |
+| **Quote data modifiable after** | ✅ Yes | ❌ No |
 
-with quote id get the quote details to finalize.
+## Request Payload Structure
 
+### Required Fields
 
-**Example Request Body**:
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `quote_id` | String/Number | Yes | The quote ID to finalize (from step 2A or 2B) |
+| `finalize` | Number | Yes | Set to `1` to finalize the quote |
+
+### Example Request Body
 
 ``` json
-   ```json
 {
-  "quote_id": "string",
-  "finalize": 1
+    "quote_id":"Q000000001015",
+    "finalize": 1
 }
 
  ```
 
-#### Response Format
+## Response Structure
 
-On a successful request, the API will return a JSON response with the following structure:
+### Success Response (Status: 200)
 
-- `status` (integer): The status of the request (0 indicates success).
-    
-- `txt` (string): A message related to the status.
-    
-- `data` (array): An array containing details about the created quote and associated entities, including:
-    
-    - `policy_id`: Identifier for the policy.
-        
-    - `product_id`: Identifier for the product.
-        
-    - `quote_id`: Identifier for the quote.
-        
-    - `premium_value`: The calculated premium value.
-        
-    - `quote`: An object containing detailed information about the quote, including customer information, coverage details, and more.
-        
+| Field | Type | Description |
+| --- | --- | --- |
+| `status` | Number | 0 = Success |
+| `txt` | String | Status message (e.g., "Quote finalized successfully") |
+| `data` | Object | Finalized quote data |
+| `data.quote_id` | String | Same quote ID (now finalized) |
+| `data.policy_id` | String | Policy ID associated with the quote |
 
-**Example Response**:
+## Workflow Position
 
-``` json
-{
-  "status": 0,
-  "txt": "",
-  "data": {
-    "quote_id": "string",
-    "policy_id": "string",
+```
+┌─────────────────┐
+│  2A: New Quote  │  (Creates quote, generates quote_id)
+└────────┬────────┘
+         ▼
+┌─────────────────────┐
+│ 2B: Update/Save     │  (Can be called multiple times)
+│     Quote           │
+└────────┬────────────┘
+         ▼
+┌─────────────────┐
+│ 2C: Finalize    │  ◄── You are here
+│     Quote       │      (One-time action, makes quote immutable)
+└────────┬────────┘
+         ▼
+┌─────────────────┐
+│ 3A: Assign      │  (Next step: Assign policy)
+└─────────────────┘
 
-    "customer_details": {
-      "email": "string",
-      "gnrlinfo_company_name": "string",
-      "gnrlinfo_applicant_contact_name": "string",
-      "gnrlinfo_legal_business_name": "string",
-      "gnrlinfo_mailing_address": "string",
-      "gnrlinfo_country": "string",
-      "gnrlinfo_state": "string",
-      "gnrlinfo_city": "string",
-      "gnrlinfo_zip_code": "string",
-      "gnrlinfo_phone_number": "string",
-      "gnrlinfo_fein_number": "string"
-    },
-
-    "gnrlinfo_commercial_general_liability": "String",
-    "gnrlinfo_product_liability": "String",
-    "gnrlinfo_commercial_property": "String",
-    "gnrlinfo_excess_liability": "String",
-
-    "gnrlinfo_new_venture": "String",
-    "gnrlinfo_license_status": "String",
-    "gnrlinfo_year_established": "string",
-    "policy_start_date": "DD-MM-YYYY",
-    "gnrlinfo_have_previous_insurance": "String",
-    "gnrl_info_additional_comments_or_questions": "string",
-
-    "cpi_location_details": [
-      {
-        "cpi_loc_no": "string",
-        "cpi_building_no": "string",
-        "cpi_locwise_optype": "string",
-        "cpi_construction_type": "string"
-      }
-    ],
-
-    "cpi_coverage_details": [
-      {
-        "cpi_cd_locno": "string",
-        "cpi_cd_bdno": "string",
-        "cpi_cd_coverages": "string",
-        "cpi_cd_cover_opted": "String",
-        "cpi_cd_suminsured": "number"
-      }
-    ],
-
-    "operation_type": [
-      {
-        "liability_loc_no": "string",
-        "liability_buildingno": "string",
-        "optype": "string",
-        "op_projected_ny_salesrevenue": "number"
-      }
-    ],
-
-    "cultivator_info": [
-      {
-        "cinfo_loc_no": "string",
-        "cinfo_build_no": "string",
-        "gnrlinfo_type_of_growlight": "string",
-        "gnrlinfo_how_often_growlight_replace": "string",
-        "gnrlinfo_warrant": "string"
-      }
-    ],
-
-    "manufacturing_info": [
-      {
-        "manfinfo_loc_no": "string",
-        "manfinfo_build_no": "string",
-        "grnl_info_extraction_method": "string",
-        "grnl_info_other_extraction_method": "string",
-        "gnrl_info_is_closedloop_extraction": "string",
-        "gnrl_info_c1d1room": "string",
-        "gnrl_info_non_extraction_process": "string"
-      }
-    ],
-
-    "total_tax": "number",
-    "premium_value": "number",
-    "total_amount": "string",
-    "source": "API"
-  }
-}
  ```
 
+## When to Use This Endpoint
 
+| Scenario | Use This Endpoint? |
+| --- | --- |
+| Quote data is complete and verified | ✅ Yes |
+| Ready to proceed to quote assignment | ✅ Yes |
+| Need to lock quote to prevent changes | ✅ Yes |
+| Still making changes to quote | ❌ No - Use 2B: Update Quote |
+| Creating a new quote | ❌ No - Use 2A: New Quote |
 
-### Notes
+## Important Notes
 
-Ensure that quote id is passed in request body to avoid get that specific rcord.
+⚠️ **Irreversible Action**: Once a quote is finalized, it cannot be updated or modified. This is a one-way operation.
 
-The response may contain additional nested objects and arrays that provide comprehensive details about the quote and its associated data.
+⚠️ **quote_id Required**: You must include the `quote_id` in the payload to identify which quote to finalize.
 
+⚠️ **Finalize Flag**: The `finalize` parameter must be set to `1` to confirm the finalization action.
+
+⚠️ **Next Step Required**: After finalization, proceed to step 3A (Assign) to complete the policy issuance workflow.
+
+⚠️ **No Updates After**: If changes are needed after finalization, you must create a new quote using step 2A.

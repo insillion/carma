@@ -1,222 +1,101 @@
-### API Endpoint: Create Quote
+# 2A: New Quote - Create Quote
 
-This endpoint allows users to create a new insurance quote based on the provided parameters. It is primarily used for generating quotes in the context of insurance.
+## Overview
 
-#### Request Format
+The New Quote endpoint **creates a new insurance quote** and generates unique identifiers (`quote_id` and `policy_id`).
 
-- **Method**: POST
-    
-- **URL**: `{{base_url}}/api/v1/carma/quote`
-    
-- **Content-Type**: application/json
-    
+`This endpoint uses the same payload structure as Premium Calc (1A)`, but unlike Premium Calc which only calculates the premium, this endpoint actually persists the quote in the system and will return all relevant details needed for further processing or user interaction.
 
-#### Request Body
+## Endpoint Details
 
-This document outlines the fields present in the quote JSON object, providing a description of each field and its expected data type.
+| Property | Value |
+| --- | --- |
+| **Method** | `POST` |
+| **URL** | `{{host}}/api/v1/carma/quote` |
+| **Authentication** | Required - `in-auth-token: {{token}}` |
+| **Content-Type** | `application/json` |
 
-The request body must be in JSON format and should include the fields as shown on high level :
+---
 
-- `product_id` (string) (Constant): The identifier for the product.
-- `customer_first_name` (string): The first name of the customer.
-- `customer_last_name` (string): The last name of the customer.
-- `customer_email` (string): The email address of the customer.
-- `customer_phone` (string): The phone number of the customer.
-- `company_name` (string): The name of the company.
-- `comapany_address_line1` (string): The first line of the company's address.
-- `company_address_line2` (string): The second line of the company's address.
-- `company_city` (string): The city of the company's address.
-- `company_state` (string): The state of the company's address.
-- `company_postal_code` (string): The postal code of the company's address.
-- `location_state` (string): The state where the insured property is located.
+## Key Difference: Premium Calc vs New Quote
 
+| Aspect | 1A: Premium Calc | 2A: New Quote |
+| --- | --- | --- |
+| **Purpose** | Calculate premium only | Create quote in system |
+| **Persists Data** | ❌ No | ✅ Yes |
+| **Generates quote_id** | ❌ No | ✅ Yes (Auto-generated) |
+| **Generates policy_id** | ❌ No | ✅ Yes (Auto-generated) |
+| **Payload** | Same | Same |
 
-**Example Request Body**:
+---
+
+## Request Payload Structure
+
+This endpoint uses the same payload structure as Premium Calc (1A)
+
+---
+
+## Response Structure
+
+### Success Response (Status: 200)
 
 ``` json
 {
-  "customer_details": {
-    "gnrlinfo_company_name": "string",
-    "gnrlinfo_applicant_contact_name": "string",
-    "gnrlinfo_legal_business_name": "string",
-    "gnrlinfo_mailing_address": "string",
-    "email": "string",
-    "gnrlinfo_fein_number": "string",
-    "gnrlinfo_zip_code": "string",
-    "gnrlinfo_phone_number": "string"
-  },
-  "gnrlinfo_commercial_general_liability": "string",
-  "gnrlinfo_product_liability": "string",
-  "gnrlinfo_commercial_property": "string",
-  "gnrlinfo_excess_liability": "string",
-  "gnrlinfo_new_venture": "string",
-  "gnrlinfo_license_status": "string",
-  "gnrlinfo_year_established": "string",
-  "policy_start_date": "DD-MM-YYYY",
-  "gnrlinfo_have_previous_insurance": "string",
-  "gnrl_info_additional_comments_or_questions": "string",
-  "operation_type": [
-    {
-      "liability_loc_no": "string",
-      "liability_buildingno": "string",
-      "optype": "string",
-      "op_projected_ny_salesrevenue": "number"
+    "status": 0,
+    "txt": "",
+    "data": {
+        "quote_id": "Q000000001015",
+        "policy_id": "P000000001015",
+        "customer_details": { ... },
+        "total_tax": 500,
+        "premium_value": 3000,
+        "total_amount": "3500.00",
+        "source": "API"
     }
-  ],
-  "cpi_location_details": [
-    {
-      "cpi_loc_no": "string",
-      "cpi_building_no": "string",
-      "cpi_locwise_optype": "string",
-      "cpi_construction_type": "string"
-    }
-  ],
-  "cpi_coverage_details": [
-    {
-      "cpi_cd_locno": "string",
-      "cpi_cd_bdno": "string",
-      "cpi_cd_coverages": "string",
-      "cpi_cd_cover_opted": "string",
-      "cpi_cd_suminsured": "number"
-    }
-  ],
-  "cultivator_info": [
-    {
-      "cinfo_loc_no": "string",
-      "cinfo_build_no": "string",
-      "gnrlinfo_type_of_growlight": "string",
-      "gnrlinfo_how_often_growlight_replace": "string",
-      "gnrlinfo_warrant": "string"
-    }
-  ],
-  "manufacturing_info": [
-    {
-      "manfinfo_loc_no": "string",
-      "manfinfo_build_no": "string",
-      "grnl_info_extraction_method": "string",
-      "grnl_info_other_extraction_method": "string",
-      "gnrl_info_is_closedloop_extraction": "string",
-      "gnrl_info_c1d1room": "string",
-      "gnrl_info_non_extraction_process": "string"
-    }
-  ]
 }
 
  ```
 
-#### Sample Response Format
+### Key Response Fields
 
-On a successful request, the API will return a JSON response with the following structure:
+| Field | Type | Description |
+| --- | --- | --- |
+| `status` | Number | 0 = Success |
+| `data.quote_id` | String | **Auto-generated unique quote identifier** (e.g., "Q000000001015") |
+| `data.policy_id` | String | **Auto-generated unique policy identifier** (e.g., "P000000001015") |
+| `data.premium_value` | Number | Calculated premium amount |
+| `data.total_tax` | Number | Total applicable taxes/fees |
+| `data.total_amount` | String | Total amount (premium + tax) |
 
-- `status` (integer): The status of the request (0 indicates success).
-    
-- `txt` (string): A message related to the status.
-    
-- `data` (array): An array containing details about the created quote and associated entities, including:
-    
-    - `policy_id`: Identifier for the policy.
-        
-    - `product_id`: Identifier for the product.
-        
-    - `quote_id`: Identifier for the quote.
-        
-    - `premium_value`: The calculated premium value.
-        
-    - `quote`: An object containing detailed information about the quote, including customer information, coverage details, and more.
-        
+## Workflow Position
 
-**Example Response**:
+```
+┌─────────────────┐
+│      Auth       │
+└────────┬────────┘
+         ▼
+┌─────────────────┐
+│ 1A: Premium Calc│  (Calculate only - no quote created)
+└────────┬────────┘
+         ▼
+┌─────────────────┐
+│  2A: New Quote  │  ◄── You are here (Quote created)
+└────────┬────────┘
+         ▼
+┌─────────────────┐
+│ 2B: Update Quote│
+└─────────────────┘
 
-``` json
-{
-  "status": 0,
-  "txt": "",
-  "data": {
-    "quote_id": "string",
-    "policy_id": "string",
-
-    "customer_details": {
-      "email": "string",
-      "gnrlinfo_company_name": "string",
-      "gnrlinfo_applicant_contact_name": "string",
-      "gnrlinfo_legal_business_name": "string",
-      "gnrlinfo_mailing_address": "string",
-      "gnrlinfo_country": "string",
-      "gnrlinfo_state": "string",
-      "gnrlinfo_city": "string",
-      "gnrlinfo_zip_code": "string",
-      "gnrlinfo_phone_number": "string",
-      "gnrlinfo_fein_number": "string"
-    },
-
-    "gnrlinfo_commercial_general_liability": "String",
-    "gnrlinfo_product_liability": "String",
-    "gnrlinfo_commercial_property": "String",
-    "gnrlinfo_excess_liability": "String",
-
-    "gnrlinfo_new_venture": "String",
-    "gnrlinfo_license_status": "String",
-    "gnrlinfo_year_established": "string",
-    "policy_start_date": "DD-MM-YYYY",
-    "gnrlinfo_have_previous_insurance": "String",
-    "gnrl_info_additional_comments_or_questions": "string",
-
-    "cpi_location_details": [
-      {
-        "cpi_loc_no": "string",
-        "cpi_building_no": "string",
-        "cpi_locwise_optype": "string",
-        "cpi_construction_type": "string"
-      }
-    ],
-
-    "cpi_coverage_details": [
-      {
-        "cpi_cd_locno": "string",
-        "cpi_cd_bdno": "string",
-        "cpi_cd_coverages": "string",
-        "cpi_cd_cover_opted": "String",
-        "cpi_cd_suminsured": "number"
-      }
-    ],
-
-    "operation_type": [
-      {
-        "liability_loc_no": "string",
-        "liability_buildingno": "string",
-        "optype": "string",
-        "op_projected_ny_salesrevenue": "number"
-      }
-    ],
-
-    "cultivator_info": [
-      {
-        "cinfo_loc_no": "string",
-        "cinfo_build_no": "string",
-        "gnrlinfo_type_of_growlight": "string",
-        "gnrlinfo_how_often_growlight_replace": "string",
-        "gnrlinfo_warrant": "string"
-      }
-    ],
-
-    "manufacturing_info": [
-      {
-        "manfinfo_loc_no": "string",
-        "manfinfo_build_no": "string",
-        "grnl_info_extraction_method": "string",
-        "grnl_info_other_extraction_method": "string",
-        "gnrl_info_is_closedloop_extraction": "string",
-        "gnrl_info_c1d1room": "string",
-        "gnrl_info_non_extraction_process": "string"
-      }
-    ],
-
-    "total_tax": "number",
-    "premium_value": "number",
-    "total_amount": "string",
-    "source": "API"
-  }
-}
  ```
 
-This endpoint is essential for initiating the insurance quoting process and will return all relevant details needed for further processing or user interaction.
+---
+
+## Important Notes
+
+⚠️ **Prerequisites:** Must authenticate first (Auth endpoint). Recommended to run Premium Calc (1A) first to validate data and review premium before creating the quote.
+
+⚠️ **System-Generated IDs:** The `quote_id` and `policy_id` are auto-generated by the system. These IDs are essential for all subsequent operations (update, finalize, view, assign).
+
+⚠️ **No quote_id in Request:** Do NOT include `quote_id` in the request body - this endpoint creates a NEW quote. To update an existing quote, use 2B: Update/Save Quote.
+
+⚠️ **Data Validation:** As same as mention in 1A:Premium Calc.

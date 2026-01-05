@@ -1,63 +1,58 @@
-### API Endpoint: View Quote
+# 3A: Assign Quote
+
+## Overview
 
 This endpoint allows the quote to be submitted to an Underwriter (UW) for review, approval, and finalization.
 
-### Request
+## Endpoint Details
 
-- **Method**: GET
+| Property | Value |
+| --- | --- |
+| **Method** | POST |
+| **URL** | `{{host}}/api/v1/carma/assign_to` |
+| **Authentication** | Required - `in-auth-token: {{token}}` |
+| **Content-Type** | application/json |
+
+## Request Body
+
+The request body should be in JSON format with the following parameter:
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `policy_id` | string/number | Yes | The unique identifier of the policy to be assigned. Use`policy_id` variable. |
+
+### Example Request Body
+
+``` json
+{
+    "policy_id": "P000000001015"
+}
+
+ ```
+
+## Response Format
+
+### Success Response (200 OK)
+
+``` json
+{
+    "status": 0,
+    "txt": "",
+    "data": "Assigned to G000000000006"
+}
+
+ ```
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `status` | integer | Status code (0 indicates success) |
+| `txt` | string | Additional message text (may be empty) |
+| `data` | string | Confirmation message with the agent ID the quote was assigned to |
+
+## Notes
+
+- Ensure the quote exists and is in a valid state before attempting assignment
     
-- **URL**: `{{base_url}}/api/v1/carma/assign_to`
+- The `policy_id` should be obtained from a previous quote creation or update operation
     
-## Purpose
-
-Assign the finalized quote to an underwriter for review.
-
----
-
-## Request Schema
-
-| Field | Type | Required | Condition |
-|------|------|----------|-----------|
-| policy_id | string | Yes | Must be a valid `policy_id` generated after quote finalization |
-
----
-
-## Request Example
-
-```json
-{
-  "policy_id": "string"
-}
-
-## Success Response
-
-```json
-{
-  "status": 0,
-  "txt": "",
-  "data": "Assigned to G000000000006"
-}
-
-## Error Response
- **Validation Error**
- ```json
- {
-  "status": 400,
-  "txt": "string",
-  "data": ""
-}
-
-**System Error**
-```json
-{
-  "status": 500,
-  "txt": "string",
-  "data": ""
-}
-```
-
-### Notes
-
-- Ensure that the `quote_id` parameter is valid to receive the appropriate quote details and assign them to UW.
-      
-- The structure of the response allows for extensibility, meaning additional fields may be included in future updates.
+- The response will include the agent identifier (e.g., "G000000000006") to whom the quote was assigned

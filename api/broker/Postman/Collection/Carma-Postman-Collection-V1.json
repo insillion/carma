@@ -1,0 +1,284 @@
+{
+	"info": {
+		"_postman_id": "9e0bdedf-b175-4d7f-97aa-fc37991b7a80",
+		"name": "Carma V1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1483832"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set('token', pm.response.json().data.token);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": {{username}},\r\n    \"pwd\": {{password}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/v1/auth",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth"
+					]
+				},
+				"description": "### API Endpoint: Auth API\n\nThis `auth` endpoint allows users to authenticate and obtain access to our Insurance policy issuance system.\n\nBy default, the auth token remains valid for 30 minutes (idle period). To extend this duration for each user, kindly reach out to the admin.\n\nWe recommend making the auth request prior to each transaction.\n\n#### Request Format\n\n- **Method**: POST\n    \n- **URL**: `{{host}}/api/v1/auth`\n    \n- **Authentication:** `in-auth-token: {{token}}`\n    \n- **Content-Type**: application/json\n    \n\n#### Request Body\n\nThe request body must be in JSON format and should include the following fields:\n\n- `email` (string, required): The email address of the user.\n    \n- `pwd` (string, required): The password of the user.\n    \n\nThe token from this request's response is used for subsequent API calls.\n\n**Example Request Body**:\n\n``` json\n{\n    \"email\": \"xxxx\",\n    \"pwd\": \"yyyy\"\n}\n\n ```\n\n#### Response Format\n\nOn a successful request, the API will return a JSON response with the following structure:\n\n| Key | Description |\n| --- | --- |\n| status | The status of the response. 0 indicates success. |\n| txt | Error message, if any. |\n| token | System generated token to access other APIs. |\n| email | The email of the logged-in user. |\n\n**Example Response**:\n\n``` json\n{\n    \"status\": 0,\n    \"txt\": \"\",\n    \"data\": {\n        \"email\": \"broker@carma.sb.insillion.com\",\n        \"first_name\": \"\",\n        \"last_name\": \"\",\n        \"salt_public\": \"41983822\",\n        \"pepper\": 0,\n        \"priv_level\": 0,\n        \"fail_count\": 0,\n        \"pass_change_dt\": \"2025-12-25 06:21:49\",\n        \"author\": \"admin@carma.sb.insillion.com\",\n        \"ip\": \"192.168.0.35, 172.17.0.1\",\n        \"c_ts\": \"2025-12-25 06:17:58\",\n        \"u_ts\": \"2025-12-25 06:21:49.892583\",\n        \"token\": \"+lkhVoOhMULU5aYmu59/CQm60PswBB97RC7+MbSKbF58UJP4yhbNLURaQcZUggxGSz4sc/3Kwd9mLGC19XRrQheUwg+DczYh/n2u9G1HobcVMEXWwEAp\"\n    }\n}\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "1A:Premium Calc",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "in-auth-token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"customer_details\": {\n        \"gnrlinfo_company_name\": \"Green Valley Cultivation LLC\",\n        \"gnrlinfo_applicant_contact_name\": \"John Smith\",\n        \"gnrlinfo_legal_business_name\": \"Sample Business LLC\",\n        \"gnrlinfo_mailing_address\": \"123 Main Street, Fairfield, NJ, United States\",\n        \"email\": \"john.smith@gmail.com\",\n        \"gnrlinfo_fein_number\": \"12-3456789\",\n        \"gnrlinfo_zip_code\": \"07006\",\n        \"gnrlinfo_phone_number\": \"(505) 489-9222\"\n    },\n\n    \"gnrlinfo_commercial_general_liability\": \"Yes\",\n    \"gnrlinfo_product_liability\": \"No\",\n    \"gnrlinfo_commercial_property\": \"Yes\",\n    \"gnrlinfo_excess_liability\": \"Yes\",\n    \n    \"gnrlinfo_new_venture\": \"Yes\",\n    \"gnrlinfo_license_status\": \"Yes\",\n    \"gnrlinfo_year_established\": \"2020\",\n    \"policy_start_date\": \"10-30-2025\",\n    \"gnrlinfo_have_previous_insurance\": \"Yes\",\n    \"gnrl_info_additional_comments_or_questions\": \"Sample submission for API integration testing.\",\n    \"operation_type\": [\n        {\n            \"liability_loc_no\": \"1\",\n            \"liability_buildingno\": \"1\",\n            \"optype\": \"Cultivator for commercial sale\",\n            \"op_projected_ny_salesrevenue\": \"800000\"\n        }\n    ],\n     \"cultivator_info\": [\n        {\n            \"cinfo_loc_no\": \"1\",\n            \"cinfo_build_no\": \"1\",\n            \"gnrlinfo_type_of_growlight\": \"LED\",\n            \"gnrlinfo_how_often_growlight_replace\": \"Every 24 months\",\n            \"gnrlinfo_warrant\": \"2\"\n        }\n    ],\n    \"manufacturing_info\": [\n        {\n            \"manfinfo_loc_no\": \"\",\n            \"manfinfo_build_no\": \"\",\n            \"grnl_info_extraction_method\": \"\",\n            \"grnl_info_other_extraction_method\": \"\",\n            \"gnrl_info_is_closedloop_extraction\": \"\",\n            \"gnrl_info_c1d1room\": \"\",\n            \"gnrl_info_non_extraction_process\": \"\"\n        }\n    ],\n    \"cpi_location_details\": [\n        {\n            \"cpi_loc_no\": \"1\",\n            \"cpi_building_no\": \"1\",\n            \"cpi_locwise_optype\": \"Cultivator for commercial sale\",\n            \"cpi_construction_type\": \"FRAME\"\n        }\n    ],\n    \"cpi_coverage_details\": [\n        {\n            \"cpi_cd_locno\": \"1\",\n            \"cpi_cd_bdno\": \"1\",\n            \"cpi_cd_coverages\": \"Building Value\",\n            \"cpi_cd_cover_opted\": \"Yes\",\n            \"cpi_cd_suminsured\": 250000\n        },\n        {\n            \"cpi_cd_locno\": \"1\",\n            \"cpi_cd_bdno\": \"1\",\n            \"cpi_cd_coverages\": \"Tenants Improvement & Betterments\",\n            \"cpi_cd_cover_opted\": \"Yes\",\n            \"cpi_cd_suminsured\": 50000\n        },\n        {\n            \"cpi_cd_locno\": \"1\",\n            \"cpi_cd_bdno\": \"1\",\n            \"cpi_cd_coverages\": \"Business Personal Property\",\n            \"cpi_cd_cover_opted\": \"No\",\n            \"cpi_cd_suminsured\": 0\n        },\n        {\n            \"cpi_cd_locno\": \"1\",\n            \"cpi_cd_bdno\": \"1\",\n            \"cpi_cd_coverages\": \"Equipment\",\n            \"cpi_cd_cover_opted\": \"No\",\n            \"cpi_cd_suminsured\": 0\n        },\n        {\n            \"cpi_cd_locno\": \"1\",\n            \"cpi_cd_bdno\": \"1\",\n            \"cpi_cd_coverages\": \"Business Income w/ EE\",\n            \"cpi_cd_cover_opted\": \"No\",\n            \"cpi_cd_suminsured\": 0\n        },\n        {\n            \"cpi_cd_locno\": \"1\",\n            \"cpi_cd_bdno\": \"1\",\n            \"cpi_cd_coverages\": \"Business Income w/o EE\",\n            \"cpi_cd_cover_opted\": \"No\",\n            \"cpi_cd_suminsured\": 0\n        },\n        {\n            \"cpi_cd_locno\": \"1\",\n            \"cpi_cd_bdno\": \"1\",\n            \"cpi_cd_coverages\": \"Finished Stock\",\n            \"cpi_cd_cover_opted\": \"No\",\n            \"cpi_cd_suminsured\": 0\n        },        \n        {\n            \"cpi_cd_locno\": \"1\",\n            \"cpi_cd_bdno\": \"1\",\n            \"cpi_cd_coverages\": \"Flowering Plants\",\n            \"cpi_cd_cover_opted\": \"No\",\n            \"cpi_cd_suminsured\": 0\n        },\n        {\n            \"cpi_cd_locno\": \"1\",\n            \"cpi_cd_bdno\": \"1\",\n            \"cpi_cd_coverages\": \"Goods in Process\",\n            \"cpi_cd_cover_opted\": \"No\",\n            \"cpi_cd_suminsured\": 0\n        },\n        {\n            \"cpi_cd_locno\": \"1\",\n            \"cpi_cd_bdno\": \"1\",\n            \"cpi_cd_coverages\": \"Immature Seedings\",\n            \"cpi_cd_cover_opted\": \"No\",\n            \"cpi_cd_suminsured\": 0\n        },\n                {\n            \"cpi_cd_locno\": \"1\",\n            \"cpi_cd_bdno\": \"1\",\n            \"cpi_cd_coverages\": \"Living Plant\",\n            \"cpi_cd_cover_opted\": \"No\",\n            \"cpi_cd_suminsured\": 0\n        },\n        {\n            \"cpi_cd_locno\": \"1\",\n            \"cpi_cd_bdno\": \"1\",\n            \"cpi_cd_coverages\": \"Loss Payee\",\n            \"cpi_cd_cover_opted\": \"No\",\n            \"cpi_cd_suminsured\": 0\n        },\n        {\n            \"cpi_cd_locno\": \"1\",\n            \"cpi_cd_bdno\": \"1\",\n            \"cpi_cd_coverages\": \"Outdoor Sign\",\n            \"cpi_cd_cover_opted\": \"No\",\n            \"cpi_cd_suminsured\": 0\n        },\n        {\n            \"cpi_cd_locno\": \"1\",\n            \"cpi_cd_bdno\": \"1\",\n            \"cpi_cd_coverages\": \"Pre-Vegetative Plants\",\n            \"cpi_cd_cover_opted\": \"No\",\n            \"cpi_cd_suminsured\": 0\n        },\n        {\n            \"cpi_cd_locno\": \"1\",\n            \"cpi_cd_bdno\": \"1\",\n            \"cpi_cd_coverages\": \"Vegetative Plants\",\n            \"cpi_cd_cover_opted\": \"No\",\n            \"cpi_cd_suminsured\": 0\n        },\n        {\n            \"cpi_cd_locno\": \"1\",\n            \"cpi_cd_bdno\": \"1\",\n            \"cpi_cd_coverages\": \"Personal Property Of Others\",\n            \"cpi_cd_cover_opted\": \"No\",\n            \"cpi_cd_suminsured\": 0\n        }\n\n    ]   \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/v1/carma/premium_calc",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"carma",
+						"premium_calc"
+					]
+				},
+				"description": "# 1A: Premium Calc API\n\n## Overview\n\nThe Premium Calculation endpoint calculates insurance premiums for cannabis cultivation businesses based on input data without creating a new quote.\n\n## Endpoint Details\n\n| Property | Value |\n| --- | --- |\n| **Method** | `POST` |\n| **URL** | `{{host}}/api/v1/carma/premium_calc` |\n| **Authentication** | Required - `in-auth-token: {{token}}` |\n| **Content-Type** | `application/json` |\n\n---\n\n## Request Payload Structure\n\n### 1\\. Customer Details (`customer_details`)\n\nContains applicant/business information.\n\n| Field | Type | Required | Description | Example |\n| --- | --- | --- | --- | --- |\n| `gnrlinfo_company_name` | String | Yes | Company/DBA name | \"Green Valley Cultivation LLC\" |\n| `gnrlinfo_applicant_contact_name` | String | Yes | Primary contact person | \"John Smith\" |\n| `gnrlinfo_legal_business_name` | String | Yes | Legal registered business name | \"Sample Business LLC\" |\n| `gnrlinfo_mailing_address` | String | Yes | Full mailing address | \"123 Main Street, Fairfield, NJ, United States\" |\n| `email` | String | Yes | Contact email address | \"john.smith@gmail.com\" |\n| `gnrlinfo_fein_number` | String | Yes | Federal Employer Identification Number | \"12-3456789\" |\n| `gnrlinfo_zip_code` | String | Yes | ZIP/Postal code | \"07006\" |\n| `gnrlinfo_phone_number` | String | Yes | Contact phone number | \"(505) 489-9222\" |\n\n### 2\\. Coverage Selection Flags (Root Level)\n\nIndicates which coverage types are being requested.\n\n| Field | Type | Values | Description |\n| --- | --- | --- | --- |\n| `gnrlinfo_commercial_general_liability` | String | \"Yes\" / \"No\" | Commercial General Liability |\n| `gnrlinfo_product_liability` | String | \"Yes\" / \"No\" | Product Liability |\n| `gnrlinfo_commercial_property` | String | \"Yes\" / \"No\" | Commercial Property |\n| `gnrlinfo_excess_liability` | String | \"Yes\" / \"No\" | Excess Liability |\n\n### 3\\. Business Information (Root Level)\n\n| Field | Type | Required | Description | Example |\n| --- | --- | --- | --- | --- |\n| `gnrlinfo_new_venture` | String | Yes | Is this a new business venture? | \"Yes\" / \"No\" |\n| `gnrlinfo_license_status` | String | Yes | Does business have valid license? | \"Yes\" / \"No\" |\n| `gnrlinfo_year_established` | String | Yes | Year business was established | \"2020\" |\n| `policy_start_date` | String | Yes | Desired policy start date (MM-DD-YYYY) | \"10-30-2025\" |\n| `gnrlinfo_have_previous_insurance` | String | Yes | Has prior insurance coverage? | \"Yes\" / \"No\" |\n| `gnrl_info_additional_comments_or_questions` | String | No | Additional notes or questions | \"Sample submission...\" |\n\n### 4\\. Operation Type (Root Level)\n\nArray of location/building operations for liability coverage.\n\n| Field | Type | Description | Example |\n| --- | --- | --- | --- |\n| `liability_loc_no` | String | Location number | \"1\" |\n| `liability_buildingno` | String | Building number at location | \"1\" |\n| `optype` | String | Type of cannabis operation | \"Cultivator for commercial sale\" |\n| `op_projected_ny_salesrevenue` | String | Projected next year sales revenue | \"800000\" |\n\n**Supported Operation Types:**\n\n- Dispensary-retail sales\n    \n- Dispensary and grow for own use\n    \n- Dispensary and commercial grow\n    \n- Cultivator for commercial sale\n    \n- Cannabis Products Manufacturing w/o solvent\n    \n- Cannabis Manufacturer - Processor w/solvent\n    \n- Laboratories/Testing of Product\n    \n- Distribution-Warehouse NOC\n    \n\n### 5\\. Cultivator Info (`cultivator_info`)\n\nRequired when operation type is **Cultivator for commercial sale**.\n\n| Field | Type | Description | Example |\n| --- | --- | --- | --- |\n| `cinfo_loc_no` | String | Location number | \"1\" |\n| `cinfo_build_no` | String | Building number | \"1\" |\n| `gnrlinfo_type_of_growlight` | String | Type of grow lights used | \"LED\" |\n| `gnrlinfo_how_often_growlight_replace` | String | Replacement frequency | \"Every 24 months\" |\n| `gnrlinfo_warrant` | String | Warranty period in years | \"2\" |\n\n### 6\\. Manufacturing Info (`manufacturing_info`)\n\nRequired when operation type includes **Cannabis Products Manufacturing w/o solvent** Or **Cannabis Manufacturer - Processor w/solvent**\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `manfinfo_loc_no` | String | Location number |\n| `manfinfo_build_no` | String | Building number |\n| `grnl_info_extraction_method` | String | Extraction method used |\n| `grnl_info_other_extraction_method` | String | Other extraction method if applicable |\n| `gnrl_info_is_closedloop_extraction` | String | Uses closed-loop extraction? |\n| `gnrl_info_c1d1room` | String | Has C1D1 compliant room? |\n| `gnrl_info_non_extraction_process` | String | Non-extraction processes used |\n\n### 7\\. CPI Location Details (`cpi_location_details`)\n\nArray of property locations for Commercial Property Insurance.\n\n| Field | Type | Description | Example |\n| --- | --- | --- | --- |\n| `cpi_loc_no` | String | Location number | \"1\" |\n| `cpi_building_no` | String | Building number | \"1\" |\n| `cpi_locwise_optype` | String | Operation type at this location | \"Cultivator for commercial sale\" |\n| `cpi_construction_type` | String | Building construction type | \"FRAME\" |\n\n**Supported Construction Types:**\n\n- FRAME\n    \n- JOISTED MASONRY\n    \n- NON COMBUSTIBLE\n    \n- MASONRY NON COMBUSTIBLE\n    \n- FIRE RESISTIVE\n    \n\n### 8\\. CPI Coverage Details (`cpi_coverage_details`)\n\nArray of coverage options per location/building.\n\n| Field | Type | Description | Example |\n| --- | --- | --- | --- |\n| `cpi_cd_locno` | String | Location number | \"1\" |\n| `cpi_cd_bdno` | String | Building number | \"1\" |\n| `cpi_cd_coverages` | String | Coverage type name | \"Building Value\" |\n| `cpi_cd_cover_opted` | String | Is coverage selected? | \"Yes\" / \"No\" |\n| `cpi_cd_suminsured` | Number | Sum insured amount (0 if not opted) | 250000 |\n\n**Supported Coverage Types:** Building Value, Tenants Improvement & Betterments, Business Personal Property, Equipment, Business Income w/ EE, Business Income w/o EE, Finished Stock, Flowering Plants, Goods in Process, Immature Seedings, Living Plant, Loss Payee, Outdoor Sign, Pre-Vegetative Plants, Vegetative Plants, Personal Property Of Others\n\n---\n\n## Response Structure\n\n### Success Response (Status Code: 200)\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `status` | Number | 0 = Success, Non-zero = Error |\n| `txt` | String | Error message (empty on success) |\n| `data` | Object | Contains all submitted data plus calculated values |\n| `data.premium_value` | Number | **Calculated premium amount** |\n| `data.total_tax` | Number | **Total applicable taxes/fees** |\n\n## Important Notes\n\n⚠️ **Prerequisites:** Must authenticate first using the Auth endpoint. Token must be passed in `in-auth-token` header.\n\n⚠️ **Data Validation:**\n\n- All \"Yes\"/\"No\" fields are case-sensitive.\n    \n- Date format must be MM-DD-YYYY.\n    \n- FEIN format: XX-XXXXXXX.\n    \n- Sum insured should be 0 (not empty) when coverage is not opted in CPI coverage details.\n    \n- `If gnrlinfo_commercial_property = \"No\", then the location and coverage arrays should be empty: \"cpi_location_details\": [], \"cpi_coverage_details\": [] or keys with empty values.`\n    \n\n**Example Sample Body**\n\n``` json\n{\n \"customer_details\": {\n        \"gnrlinfo_company_name\": \"Green Valley Cultivation LLC\",\n        \"gnrlinfo_applicant_contact_name\": \"John Smith\",\n        \"gnrlinfo_legal_business_name\": \"Sample Business LLC\",\n        \"gnrlinfo_mailing_address\": \"123 Main Street, Fairfield, NJ, United States\",\n        \"email\": \"john.smith@gmail.com\",\n        \"gnrlinfo_fein_number\": \"12-3456789\",\n        \"gnrlinfo_zip_code\": \"07006\",\n        \"gnrlinfo_phone_number\": \"(505) 489-9222\"\n },\n\"gnrlinfo_commercial_general_liability\": \"Yes\",\n\"gnrlinfo_product_liability\": \"No\",\n\"gnrlinfo_commercial_property\": \"Yes\",\n\"gnrlinfo_excess_liability\": \"Yes\",\n\"gnrlinfo_new_venture\": \"Yes\",\n\"gnrlinfo_license_status\": \"Yes\",\n\"gnrlinfo_year_established\": \"2020\",\n\"policy_start_date\": \"10-30-2025\",\n\"gnrlinfo_have_previous_insurance\": \"Yes\",\n\"gnrl_info_additional_comments_or_questions\": \"Sample submission for API integration testing.\",\n\"operation_type\": [\n    {\n        \"liability_loc_no\": \"1\",\n        \"liability_buildingno\": \"1\",\n        \"optype\": \"Cultivator for commercial sale\",\n        \"op_projected_ny_salesrevenue\": \"800000\"\n    }\n],\n \"cultivator_info\": [\n    {\n        \"cinfo_loc_no\": \"1\",\n        \"cinfo_build_no\": \"1\",\n        \"gnrlinfo_type_of_growlight\": \"LED\",\n        \"gnrlinfo_how_often_growlight_replace\": \"Every 24 months\",\n        \"gnrlinfo_warrant\": \"2\"\n    }\n],\n\"manufacturing_info\": [\n    {\n        \"manfinfo_loc_no\": \"\",\n        \"manfinfo_build_no\": \"\",\n        \"grnl_info_extraction_method\": \"\",\n        \"grnl_info_other_extraction_method\": \"\",\n        \"gnrl_info_is_closedloop_extraction\": \"\",\n        \"gnrl_info_c1d1room\": \"\",\n        \"gnrl_info_non_extraction_process\": \"\"\n    }\n],\n\"cpi_location_details\": [\n    {\n        \"cpi_loc_no\": \"1\",\n        \"cpi_building_no\": \"1\",\n        \"cpi_locwise_optype\": \"Cultivator for commercial sale\",\n        \"cpi_construction_type\": \"FRAME\"\n    }\n],\n\"cpi_coverage_details\": [\n    {\n        \"cpi_cd_locno\": \"1\",\n        \"cpi_cd_bdno\": \"1\",\n        \"cpi_cd_coverages\": \"Building Value\",\n        \"cpi_cd_cover_opted\": \"Yes\",\n        \"cpi_cd_suminsured\": 250000\n    },\n    {\n        \"cpi_cd_locno\": \"1\",\n        \"cpi_cd_bdno\": \"1\",\n        \"cpi_cd_coverages\": \"Tenants Improvement & Betterments\",\n        \"cpi_cd_cover_opted\": \"Yes\",\n        \"cpi_cd_suminsured\": 50000\n    },\n    {\n        \"cpi_cd_locno\": \"1\",\n        \"cpi_cd_bdno\": \"1\",\n        \"cpi_cd_coverages\": \"Business Personal Property\",\n        \"cpi_cd_cover_opted\": \"No\",\n        \"cpi_cd_suminsured\": 0\n    },\n    {\n        \"cpi_cd_locno\": \"1\",\n        \"cpi_cd_bdno\": \"1\",\n        \"cpi_cd_coverages\": \"Equipment\",\n        \"cpi_cd_cover_opted\": \"No\",\n        \"cpi_cd_suminsured\": 0\n    },\n    {\n        \"cpi_cd_locno\": \"1\",\n        \"cpi_cd_bdno\": \"1\",\n        \"cpi_cd_coverages\": \"Business Income w/ EE\",\n        \"cpi_cd_cover_opted\": \"No\",\n        \"cpi_cd_suminsured\": 0\n    },\n    {\n        \"cpi_cd_locno\": \"1\",\n        \"cpi_cd_bdno\": \"1\",\n        \"cpi_cd_coverages\": \"Business Income w/o EE\",\n        \"cpi_cd_cover_opted\": \"No\",\n        \"cpi_cd_suminsured\": 0\n    },\n    {\n        \"cpi_cd_locno\": \"1\",\n        \"cpi_cd_bdno\": \"1\",\n        \"cpi_cd_coverages\": \"Finished Stock\",\n        \"cpi_cd_cover_opted\": \"No\",\n        \"cpi_cd_suminsured\": 0\n    },        \n    {\n        \"cpi_cd_locno\": \"1\",\n        \"cpi_cd_bdno\": \"1\",\n        \"cpi_cd_coverages\": \"Flowering Plants\",\n        \"cpi_cd_cover_opted\": \"No\",\n        \"cpi_cd_suminsured\": 0\n    },\n    {\n        \"cpi_cd_locno\": \"1\",\n        \"cpi_cd_bdno\": \"1\",\n        \"cpi_cd_coverages\": \"Goods in Process\",\n        \"cpi_cd_cover_opted\": \"No\",\n        \"cpi_cd_suminsured\": 0\n    },\n    {\n        \"cpi_cd_locno\": \"1\",\n        \"cpi_cd_bdno\": \"1\",\n        \"cpi_cd_coverages\": \"Immature Seedings\",\n        \"cpi_cd_cover_opted\": \"No\",\n        \"cpi_cd_suminsured\": 0\n    },\n            {\n        \"cpi_cd_locno\": \"1\",\n        \"cpi_cd_bdno\": \"1\",\n        \"cpi_cd_coverages\": \"Living Plant\",\n        \"cpi_cd_cover_opted\": \"No\",\n        \"cpi_cd_suminsured\": 0\n    },\n    {\n        \"cpi_cd_locno\": \"1\",\n        \"cpi_cd_bdno\": \"1\",\n        \"cpi_cd_coverages\": \"Loss Payee\",\n        \"cpi_cd_cover_opted\": \"No\",\n        \"cpi_cd_suminsured\": 0\n    },\n    {\n        \"cpi_cd_locno\": \"1\",\n        \"cpi_cd_bdno\": \"1\",\n        \"cpi_cd_coverages\": \"Outdoor Sign\",\n        \"cpi_cd_cover_opted\": \"No\",\n        \"cpi_cd_suminsured\": 0\n    },\n    {\n        \"cpi_cd_locno\": \"1\",\n        \"cpi_cd_bdno\": \"1\",\n        \"cpi_cd_coverages\": \"Pre-Vegetative Plants\",\n        \"cpi_cd_cover_opted\": \"No\",\n        \"cpi_cd_suminsured\": 0\n    },\n    {\n        \"cpi_cd_locno\": \"1\",\n        \"cpi_cd_bdno\": \"1\",\n        \"cpi_cd_coverages\": \"Vegetative Plants\",\n        \"cpi_cd_cover_opted\": \"No\",\n        \"cpi_cd_suminsured\": 0\n    },\n    {\n        \"cpi_cd_locno\": \"1\",\n        \"cpi_cd_bdno\": \"1\",\n        \"cpi_cd_coverages\": \"Personal Property Of Others\",\n        \"cpi_cd_cover_opted\": \"No\",\n        \"cpi_cd_suminsured\": 0\n    }\n] \n}\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "2A:New Quote",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let quote = pm.response.json().data;\r",
+							"pm.environment.set('quote_id', quote.quote_id);\r",
+							"pm.environment.set('policy_id', quote.policy_id);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "in-auth-token",
+						"value": "{{token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"customer_details\": {\r\n        \"gnrlinfo_company_name\": \"Green Valley Cultivation LLC\",\r\n        \"gnrlinfo_applicant_contact_name\": \"John Smith\",\r\n        \"gnrlinfo_legal_business_name\": \"Sample Business LLC\",\r\n        \"gnrlinfo_mailing_address\": \"123 Main Street, Fairfield, NJ, United States\",\r\n        \"email\": \"john.smith@gmail.com\",\r\n        \"gnrlinfo_fein_number\": \"12-3456789\",\r\n        \"gnrlinfo_zip_code\": \"07006\",\r\n        \"gnrlinfo_phone_number\": \"(505) 489-9222\"\r\n    },\r\n\r\n    \"gnrlinfo_commercial_general_liability\": \"Yes\",\r\n    \"gnrlinfo_product_liability\": \"No\",\r\n    \"gnrlinfo_commercial_property\": \"Yes\",\r\n    \"gnrlinfo_excess_liability\": \"Yes\",\r\n    \r\n    \"gnrlinfo_new_venture\": \"Yes\",\r\n    \"gnrlinfo_license_status\": \"Yes\",\r\n    \"gnrlinfo_year_established\": \"2020\",\r\n    \"policy_start_date\": \"10-30-2025\",\r\n    \"gnrlinfo_have_previous_insurance\": \"Yes\",\r\n    \"gnrl_info_additional_comments_or_questions\": \"Sample submission for API integration testing.\",\r\n    \"operation_type\": [\r\n        {\r\n            \"liability_loc_no\": \"1\",\r\n            \"liability_buildingno\": \"1\",\r\n            \"optype\": \"Cultivator for commercial sale\",\r\n            \"op_projected_ny_salesrevenue\": \"800000\"\r\n        }\r\n    ],\r\n     \"cultivator_info\": [\r\n        {\r\n            \"cinfo_loc_no\": \"1\",\r\n            \"cinfo_build_no\": \"1\",\r\n            \"gnrlinfo_type_of_growlight\": \"LED\",\r\n            \"gnrlinfo_how_often_growlight_replace\": \"Every 24 months\",\r\n            \"gnrlinfo_warrant\": \"2\"\r\n        }\r\n    ],\r\n    \"manufacturing_info\": [\r\n        {\r\n            \"manfinfo_loc_no\": \"\",\r\n            \"manfinfo_build_no\": \"\",\r\n            \"grnl_info_extraction_method\": \"\",\r\n            \"grnl_info_other_extraction_method\": \"\",\r\n            \"gnrl_info_is_closedloop_extraction\": \"\",\r\n            \"gnrl_info_c1d1room\": \"\",\r\n            \"gnrl_info_non_extraction_process\": \"\"\r\n        }\r\n    ],\r\n    \"cpi_location_details\": [\r\n        {\r\n            \"cpi_loc_no\": \"1\",\r\n            \"cpi_building_no\": \"1\",\r\n            \"cpi_locwise_optype\": \"Cultivator for commercial sale\",\r\n            \"cpi_construction_type\": \"FRAME\"\r\n        }\r\n    ],\r\n    \"cpi_coverage_details\": [\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Building Value\",\r\n            \"cpi_cd_cover_opted\": \"Yes\",\r\n            \"cpi_cd_suminsured\": 250000\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Tenants Improvement & Betterments\",\r\n            \"cpi_cd_cover_opted\": \"Yes\",\r\n            \"cpi_cd_suminsured\": 50000\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Business Personal Property\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Equipment\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Business Income w/ EE\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Business Income w/o EE\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Finished Stock\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },        \r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Flowering Plants\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Goods in Process\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Immature Seedings\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n                {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Living Plant\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Loss Payee\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Outdoor Sign\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Pre-Vegetative Plants\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Vegetative Plants\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Personal Property Of Others\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        }\r\n\r\n    ]   \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/v1/carma/quote",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"carma",
+						"quote"
+					]
+				},
+				"description": "# 2A: New Quote - Create Quote\n\n## Overview\n\nThe New Quote endpoint **creates a new insurance quote** and generates unique identifiers (`quote_id` and `policy_id`).\n\n`This endpoint uses the same payload structure as Premium Calc (1A)`, but unlike Premium Calc which only calculates the premium, this endpoint actually persists the quote in the system and will return all relevant details needed for further processing or user interaction.\n\n## Endpoint Details\n\n| Property | Value |\n| --- | --- |\n| **Method** | `POST` |\n| **URL** | `{{host}}/api/v1/carma/quote` |\n| **Authentication** | Required - `in-auth-token: {{token}}` |\n| **Content-Type** | `application/json` |\n\n---\n\n## Key Difference: Premium Calc vs New Quote\n\n| Aspect | 1A: Premium Calc | 2A: New Quote |\n| --- | --- | --- |\n| **Purpose** | Calculate premium only | Create quote in system |\n| **Persists Data** | ❌ No | ✅ Yes |\n| **Generates quote_id** | ❌ No | ✅ Yes (Auto-generated) |\n| **Generates policy_id** | ❌ No | ✅ Yes (Auto-generated) |\n| **Payload** | Same | Same |\n\n---\n\n## Request Payload Structure\n\nThis endpoint uses the same payload structure as Premium Calc (1A)\n\n---\n\n## Response Structure\n\n### Success Response (Status: 200)\n\n``` json\n{\n    \"status\": 0,\n    \"txt\": \"\",\n    \"data\": {\n        \"quote_id\": \"Q000000001015\",\n        \"policy_id\": \"P000000001015\",\n        \"customer_details\": { ... },\n        \"total_tax\": 500,\n        \"premium_value\": 3000,\n        \"total_amount\": \"3500.00\",\n        \"source\": \"API\"\n    }\n}\n\n ```\n\n### Key Response Fields\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `status` | Number | 0 = Success |\n| `data.quote_id` | String | **Auto-generated unique quote identifier** (e.g., \"Q000000001015\") |\n| `data.policy_id` | String | **Auto-generated unique policy identifier** (e.g., \"P000000001015\") |\n| `data.premium_value` | Number | Calculated premium amount |\n| `data.total_tax` | Number | Total applicable taxes/fees |\n| `data.total_amount` | String | Total amount (premium + tax) |\n\n## Workflow Position\n\n```\n┌─────────────────┐\n│      Auth       │\n└────────┬────────┘\n         ▼\n┌─────────────────┐\n│ 1A: Premium Calc│  (Calculate only - no quote created)\n└────────┬────────┘\n         ▼\n┌─────────────────┐\n│  2A: New Quote  │  ◄── You are here (Quote created)\n└────────┬────────┘\n         ▼\n┌─────────────────┐\n│ 2B: Update Quote│\n└─────────────────┘\n\n ```\n\n---\n\n## Important Notes\n\n⚠️ **Prerequisites:** Must authenticate first (Auth endpoint). Recommended to run Premium Calc (1A) first to validate data and review premium before creating the quote.\n\n⚠️ **System-Generated IDs:** The `quote_id` and `policy_id` are auto-generated by the system. These IDs are essential for all subsequent operations (update, finalize, view, assign).\n\n⚠️ **No quote_id in Request:** Do NOT include `quote_id` in the request body - this endpoint creates a NEW quote. To update an existing quote, use 2B: Update/Save Quote.\n\n⚠️ **Data Validation:** As same as mention in 1A:Premium Calc."
+			},
+			"response": []
+		},
+		{
+			"name": "2B:Update/Save Quote",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "in-auth-token",
+						"value": "{{token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"quote_id\":{{quote_id}},\r\n    \"customer_details\": {\r\n        \"gnrlinfo_company_name\": \"Green Valley Cultivation LLC\",\r\n        \"gnrlinfo_applicant_contact_name\": \"John Smith\",\r\n        \"gnrlinfo_legal_business_name\": \"Sample Business LLC\",\r\n        \"gnrlinfo_mailing_address\": \"123 Main Street, Fairfield, NJ, United States\",\r\n        \"email\": \"john.smith@gmail.com\",\r\n        \"gnrlinfo_fein_number\": \"12-3456789\",\r\n        \"gnrlinfo_zip_code\": \"07006\",\r\n        \"gnrlinfo_phone_number\": \"(505) 489-9222\"\r\n    },\r\n\r\n    \"gnrlinfo_commercial_general_liability\": \"Yes\",\r\n    \"gnrlinfo_product_liability\": \"No\",\r\n    \"gnrlinfo_commercial_property\": \"Yes\",\r\n    \"gnrlinfo_excess_liability\": \"Yes\",\r\n    \r\n    \"gnrlinfo_new_venture\": \"Yes\",\r\n    \"gnrlinfo_license_status\": \"Yes\",\r\n    \"gnrlinfo_year_established\": \"2020\",\r\n    \"policy_start_date\": \"10-30-2025\",\r\n    \"gnrlinfo_have_previous_insurance\": \"Yes\",\r\n    \"gnrl_info_additional_comments_or_questions\": \"Sample submission for API integration testing.\",\r\n    \"operation_type\": [\r\n        {\r\n            \"liability_loc_no\": \"1\",\r\n            \"liability_buildingno\": \"1\",\r\n            \"optype\": \"Cultivator for commercial sale\",\r\n            \"op_projected_ny_salesrevenue\": \"800000\"\r\n        }\r\n    ],\r\n    \"cultivator_info\": [\r\n        {\r\n            \"cinfo_loc_no\": \"1\",\r\n            \"cinfo_build_no\": \"1\",\r\n            \"gnrlinfo_type_of_growlight\": \"LED\",\r\n            \"gnrlinfo_how_often_growlight_replace\": \"Every 24 months\",\r\n            \"gnrlinfo_warrant\": \"2\"\r\n        }\r\n    ],\r\n    \"manufacturing_info\": [\r\n        {\r\n            \"manfinfo_loc_no\": \"\",\r\n            \"manfinfo_build_no\": \"\",\r\n            \"grnl_info_extraction_method\": \"\",\r\n            \"grnl_info_other_extraction_method\": \"\",\r\n            \"gnrl_info_is_closedloop_extraction\": \"\",\r\n            \"gnrl_info_c1d1room\": \"\",\r\n            \"gnrl_info_non_extraction_process\": \"\"\r\n        }\r\n        \r\n    ],\r\n    \"cpi_location_details\": [\r\n        {\r\n            \"cpi_loc_no\": \"1\",\r\n            \"cpi_building_no\": \"1\",\r\n            \"cpi_locwise_optype\": \"Cultivator for commercial sale\",\r\n            \"cpi_construction_type\": \"FRAME\"\r\n        }\r\n    ],\r\n    \"cpi_coverage_details\": [\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Building Value\",\r\n            \"cpi_cd_cover_opted\": \"Yes\",\r\n            \"cpi_cd_suminsured\": 250000\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Tenants Improvement & Betterments\",\r\n            \"cpi_cd_cover_opted\": \"Yes\",\r\n            \"cpi_cd_suminsured\": 50000\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Business Personal Property\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Equipment\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Business Income w/ EE\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Business Income w/o EE\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Finished Stock\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },        \r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Flowering Plants\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Goods in Process\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Immature Seedings\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n                {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Living Plant\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Loss Payee\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Outdoor Sign\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Pre-Vegetative Plants\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Vegetative Plants\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        },\r\n        {\r\n            \"cpi_cd_locno\": \"1\",\r\n            \"cpi_cd_bdno\": \"1\",\r\n            \"cpi_cd_coverages\": \"Personal Property Of Others\",\r\n            \"cpi_cd_cover_opted\": \"No\",\r\n            \"cpi_cd_suminsured\": 0\r\n        }\r\n\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/v1/carma/quote",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"carma",
+						"quote"
+					]
+				},
+				"description": "# 2B: Update/Save Quote - Update Existing Quote\n\n## Overview\n\nThe Update/Save Quote endpoint **updates an existing quote** in the system by passing the `quote_id` in the request payload. Any data changes in the payload will be saved to the corresponding quote. This allows you to modify customer details, coverage selections, or any other quote information after the initial quote has been created.\n\n## Endpoint Details\n\n| Property | Value |\n| --- | --- |\n| **Method** | `POST` |\n| **URL** | `{{host}}/api/v1/carma/quote` |\n| **Authentication** | Required - `in-auth-token: {{token}}` |\n| **Content-Type** | `application/json` |\n\n---\n\n## Key Difference: New Quote vs Update Quote\n\n| Aspect | 2A: New Quote | 2B: Update Quote |\n| --- | --- | --- |\n| `quote_id` in payload | ❌ Not included | ✅ **Required** |\n| Result | Creates new quote in system | Updates existing quote |\n| Returns new IDs | Yes (auto-generated) | No (same IDs retained) |\n\n---\n\n## Request Payload Structure\n\n### Required Identifier\n\n| Field | Type | Required | Description |\n| --- | --- | --- | --- |\n| `quote_id` | String | **Yes** | The quote ID to update (`quote_id`) |\n\n### Updatable Sections\n\nAll fields from the original quote can be updated:\n\n## Example Request Body\n\n``` json\n{\n    \"quote_id\": \"Q000000001015\",\n    \"customer_details\": {\n        \"gnrlinfo_company_name\": \"Green Valley Cultivation LLC\",\n        \"gnrlinfo_applicant_contact_name\": \"Jane Doe\",\n        \"email\": \"jane.doe@gmail.com\",\n        ...\n    },\n    \"cpi_coverage_details\": [\n        {\n            \"cpi_cd_locno\": \"1\",\n            \"cpi_cd_bdno\": \"1\",\n            \"cpi_cd_coverages\": \"Building Value\",\n            \"cpi_cd_cover_opted\": \"Yes\",\n            \"cpi_cd_suminsured\": 500000\n        },\n        ...\n    ],\n    ...\n}\n\n ```\n\n---\n\n## Response Structure\n\n### Success Response (Status: 200)\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `status` | Number | 0 = Success |\n| `txt` | String | Status message |\n| `data` | Object | Updated quote data with recalculated values |\n| `data.quote_id` | String | Same quote ID (unchanged) |\n| `data.policy_id` | String | Same policy ID (unchanged) |\n| `data.premium_value` | Number | **Recalculated** premium based on changes |\n| `data.total_tax` | Number | **Recalculated** taxes/fees |\n| `data.total_amount` | String | **Recalculated** total amount |\n\n---\n\n## Workflow Position\n\n```\n┌─────────────────┐\n│  2A: New Quote  │  (Creates quote, generates quote_id)\n└────────┬────────┘\n         ▼\n┌─────────────────────┐\n│ 2B: Update/Save     │  ◄── You are here\n│     Quote           │      (Can be called multiple times)\n└────────┬────────────┘\n         ▼\n┌─────────────────┐\n│ 2C: Finalize    │\n└─────────────────┘\n\n ```\n\n---\n\n## Common Update Scenarios\n\n### 1\\. Update Contact Information\n\n``` json\n{\n    \"quote_id\": \"Q000000001015\",\n    \"customer_details\": {\n        \"gnrlinfo_applicant_contact_name\": \"Jane Doe\",\n        \"email\": \"jane.doe@company.com\"\n    }\n}\n\n ```\n\n### 2\\. Change Coverage Amount\n\n``` json\n{\n    \"quote_id\": \"Q000000001015\",\n    \"cpi_coverage_details\": [\n        {\n            \"cpi_cd_coverages\": \"Building Value\",\n            \"cpi_cd_cover_opted\": \"Yes\",\n            \"cpi_cd_suminsured\": 500000\n        }\n    ]\n}\n\n ```\n\n### 3\\. Enable Additional Coverage\n\n``` json\n{\n    \"quote_id\": \"Q000000001015\",\n    \"cpi_coverage_details\": [\n        {\n            \"cpi_cd_coverages\": \"Equipment\",\n            \"cpi_cd_cover_opted\": \"Yes\",\n            \"cpi_cd_suminsured\": 75000\n        }\n    ]\n}\n\n ```\n\n---\n\n## When to Use This Endpoint\n\n| Scenario | Use This Endpoint? |\n| --- | --- |\n| Correcting customer information | ✅ Yes |\n| Changing coverage selections | ✅ Yes |\n| Adjusting sum insured amounts | ✅ Yes |\n| Adding/removing locations | ✅ Yes |\n| Changing policy start date | ✅ Yes |\n| Creating a brand new quote | ❌ No - Use 2A: New Quote |\n| Quote already finalized | ❌ No - Cannot update finalized quotes |\n\n---\n\n## Important Notes\n\n⚠️ **quote_id Required:** You must include the `quote_id` in the payload to update an existing quote. Without it, a new quote will be created instead.\n\n⚠️ **Full Payload Required:** Send the complete quote data, not just the changed fields. The API replaces the entire quote with the submitted data.\n\n⚠️ **Premium Recalculation:** Any changes to coverage or operations will trigger automatic premium recalculation in the response.\n\n⚠️ **Multiple Updates:** You can call this endpoint multiple times before finalizing. Each call updates the quote with the latest data.\n\n⚠️ **Finalized Quotes:** Once a quote is finalized (2C), it cannot be updated. Create a new quote if changes are needed."
+			},
+			"response": []
+		},
+		{
+			"name": "2C:Finalize Quote",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "in-auth-token",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"quote_id\": {{quote_id}},\r\n    \"finalize\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/v1/carma/quote_finalize",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"carma",
+						"quote_finalize"
+					]
+				},
+				"description": "# 2C: Finalize Quote\n\n## Overview\n\nAlthough this API is named **Finalize**, the quote can still be updated later if business rules permit.  \nThis indicates that the quote is considered **ready on our end**.\n\n## Endpoint Details\n\n| Property | Value |\n| --- | --- |\n| **Method** | POST |\n| **URL** | `{{host}}/api/v1/carma/quote_finalize` |\n| **Authentication** | Required - `in-auth-token: {{token}}` |\n| **Content-Type** | application/json |\n\n## Key Difference: Update Quote vs Finalize Quote\n\n| Aspect | 2B: Update Quote | 2C: Finalize Quote |\n| --- | --- | --- |\n| **quote_id in payload** | ✅ Required | ✅ Required |\n| **Result** | Updates existing quote | Locks quote (immutable) |\n| **Can be called multiple times** | ✅ Yes | ❌ No (one-time action) |\n| **Quote data modifiable after** | ✅ Yes | ❌ No |\n\n## Request Payload Structure\n\n### Required Fields\n\n| Field | Type | Required | Description |\n| --- | --- | --- | --- |\n| `quote_id` | String/Number | Yes | The quote ID to finalize (from step 2A or 2B) |\n| `finalize` | Number | Yes | Set to `1` to finalize the quote |\n\n### Example Request Body\n\n``` json\n{\n    \"quote_id\":\"Q000000001015\",\n    \"finalize\": 1\n}\n\n ```\n\n## Response Structure\n\n### Success Response (Status: 200)\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `status` | Number | 0 = Success |\n| `txt` | String | Status message (e.g., \"Quote finalized successfully\") |\n| `data` | Object | Finalized quote data |\n| `data.quote_id` | String | Same quote ID (now finalized) |\n| `data.policy_id` | String | Policy ID associated with the quote |\n\n## Workflow Position\n\n```\n┌─────────────────┐\n│  2A: New Quote  │  (Creates quote, generates quote_id)\n└────────┬────────┘\n         ▼\n┌─────────────────────┐\n│ 2B: Update/Save     │  (Can be called multiple times)\n│     Quote           │\n└────────┬────────────┘\n         ▼\n┌─────────────────┐\n│ 2C: Finalize    │  ◄── You are here\n│     Quote       │      (One-time action, makes quote immutable)\n└────────┬────────┘\n         ▼\n┌─────────────────┐\n│ 3A: Assign      │  (Next step: Assign policy)\n└─────────────────┘\n\n ```\n\n## When to Use This Endpoint\n\n| Scenario | Use This Endpoint? |\n| --- | --- |\n| Quote data is complete and verified | ✅ Yes |\n| Ready to proceed to quote assignment | ✅ Yes |\n| Need to lock quote to prevent changes | ✅ Yes |\n| Still making changes to quote | ❌ No - Use 2B: Update Quote |\n| Creating a new quote | ❌ No - Use 2A: New Quote |\n\n## Important Notes\n\n⚠️ **Irreversible Action**: Once a quote is finalized, it cannot be updated or modified. This is a one-way operation.\n\n⚠️ **quote_id Required**: You must include the `quote_id` in the payload to identify which quote to finalize.\n\n⚠️ **Finalize Flag**: The `finalize` parameter must be set to `1` to confirm the finalization action.\n\n⚠️ **Next Step Required**: After finalization, proceed to step 3A (Assign) to complete the policy issuance workflow.\n\n⚠️ **No Updates After**: If changes are needed after finalization, you must create a new quote using step 2A."
+			},
+			"response": []
+		},
+		{
+			"name": "3A:Assign",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "in-auth-token",
+						"value": "{{token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"policy_id\": {{policy_id}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/v1/carma/assign_to",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"carma",
+						"assign_to"
+					]
+				},
+				"description": "# 3A: Assign Quote\n\n## Overview\n\nThis endpoint allows the quote to be submitted to an Underwriter (UW) for review, approval, and finalization.\n\n## Endpoint Details\n\n| Property | Value |\n| --- | --- |\n| **Method** | POST |\n| **URL** | `{{host}}/api/v1/carma/assign_to` |\n| **Authentication** | Required - `in-auth-token: {{token}}` |\n| **Content-Type** | application/json |\n\n## Request Body\n\nThe request body should be in JSON format with the following parameter:\n\n| Parameter | Type | Required | Description |\n| --- | --- | --- | --- |\n| `policy_id` | string/number | Yes | The unique identifier of the policy to be assigned. Use`policy_id` variable. |\n\n### Example Request Body\n\n``` json\n{\n    \"policy_id\": \"P000000001015\"\n}\n\n ```\n\n## Response Format\n\n### Success Response (200 OK)\n\n``` json\n{\n    \"status\": 0,\n    \"txt\": \"\",\n    \"data\": \"Assigned to G000000000006\"\n}\n\n ```\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `status` | integer | Status code (0 indicates success) |\n| `txt` | string | Additional message text (may be empty) |\n| `data` | string | Confirmation message with the agent ID the quote was assigned to |\n\n## Notes\n\n- Ensure the quote exists and is in a valid state before attempting assignment\n    \n- The `policy_id` should be obtained from a previous quote creation or update operation\n    \n- The response will include the agent identifier (e.g., \"G000000000006\") to whom the quote was assigned"
+			},
+			"response": []
+		},
+		{
+			"name": "View Quote",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "in-auth-token",
+						"value": "{{token}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/api/v1/carma/view_quote/quote?quote_id={{quote_id}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"carma",
+						"view_quote",
+						"quote"
+					],
+					"query": [
+						{
+							"key": "quote_id",
+							"value": "{{quote_id}}"
+						}
+					]
+				},
+				"description": "# View Quote\n\n## Overview\n\nThis endpoint retrieves the details of a specific insurance policy based on the given quote_id.\n\n## Endpoint Details\n\n| Property | Value |\n| --- | --- |\n| **Method** | `GET` |\n| **URL** | `{{host}}/api/v1/carma/view_quote/quote?quote_id=quote_id`  <br>Example : quote_id- Q000000001015 |\n| **Authentication** | Required - `in-auth-token: {{token}}` |\n| **Content-Type** | `application/json` |\n\n## Response Structure\n\n### Success Response (Status: 200)\n\n``` json\n{\n    \"status\": 0,\n    \"txt\": \"\",\n    \"data\": {\n        \"quote_id\": \"Q000000001015\",\n        \"policy_id\": \"P000000001015\",\n        \"customer_details\": { ... },\n        \"total_tax\": 500,\n        \"premium_value\": 3000,\n        \"total_amount\": \"3500.00\",\n        \"source\": \"API\"\n    }\n}\n\n ```\n\n## Notes\n\n- Ensure the `quote_id` exists in the system before making the request"
+			},
+			"response": []
+		}
+	]
+}
