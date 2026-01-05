@@ -1,6 +1,3 @@
-# CARMA CANNABIS INSURANCE API Kit
-Insillion API Kit for 3rd party integration
-
 # Carma Cannabis Insurance Overview
 
 ## About Carma Cannabis Insurance
