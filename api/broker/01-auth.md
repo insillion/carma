@@ -21,8 +21,9 @@ The request body must be in JSON format and should include the following fields:
 
 - `email` (string, required): The email address of the user.
     
-- `mpwd` (string, required): The password of the user.
+- `pwd` (string, required): The password of the user.
     
+
 The token from this request's response is used for subsequent API calls.
 
 **Example Request Body**:
@@ -30,7 +31,7 @@ The token from this request's response is used for subsequent API calls.
 ``` json
 {
     "email": "xxxx",
-    "mpwd": "yyyy"
+    "pwd": "yyyy"
 }
 
  ```
@@ -45,7 +46,6 @@ On a successful request, the API will return a JSON response with the following 
 | txt | Error message, if any. |
 | token | System generated token to access other APIs. |
 | email | The email of the logged-in user. |
-        
 
 **Example Response**:
 
@@ -66,7 +66,7 @@ On a successful request, the API will return a JSON response with the following 
         "ip": "192.168.0.35, 172.17.0.1",
         "c_ts": "2025-12-25 06:17:58",
         "u_ts": "2025-12-25 06:21:49.892583",
-        "token": "+lkhVoOhMULU5aYmu59/CQm60PswBB97RC7+MbSKbF58UJP4yhbNLURaQcZUggxGSz4sc/3Kwd9mLGC19XRrQheUwg+DczYh/n2u9G1HobcVMEXWwEAp"
+        "token": "+lkhVoOhMULU5aYmu59/CQm60PswBB97RC7+MbSKbF58UJP4yhbNLURaQcZUggxGSz4sc/3Kwd9mLGC19XRrQheUwg+DczYh/n2u9G1HobcVMEXWwE"
     }
 }
 
