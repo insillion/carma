@@ -1,9 +1,11 @@
 # Carma Cannabis Insurance Quote API – Integration Guide
 
+
 **Version:** v1.0  
-**Prepared By:** Insillion  
-**Prepared For:** Carma Insurance
+**Prepared By:** Insillion    
+**Prepared For:** Carma Insurance        
 **Last Updated:** 05-Jan-2026  
+
 ---
 
 ## 1. Introduction
