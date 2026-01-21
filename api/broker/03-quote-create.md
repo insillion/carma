@@ -47,6 +47,9 @@ This endpoint uses the same payload structure as Premium-Calc(02)
         "quote_id": "Q000000001015",
         "policy_id": "P000000001015",
         "customer_details": { ... },
+        "gl_chargable_premium": 1200,
+        "pl_chargable_premium": 0,
+        "property_base_cover_premium": 1800,
         "total_tax": 500,
         "premium_value": 3000,
         "total_amount": "3500.00",
@@ -66,6 +69,9 @@ This endpoint uses the same payload structure as Premium-Calc(02)
 | `data.premium_value` | Number | Calculated premium amount |
 | `data.total_tax` | Number | Total applicable taxes/fees |
 | `data.total_amount` | String | Total amount (premium + tax) |
+| `data.gl_chargable_premium` | Number | Premium amount for general_liability and excess_liability |
+| `data.pl_chargable_premium` | Number | Premium amount for product_liability |
+| `date.property_base_cover_premium` | Number | Premium amount for commercial_property |
 
 ## Workflow Position
 

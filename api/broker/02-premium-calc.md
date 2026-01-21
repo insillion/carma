@@ -161,6 +161,9 @@ Array of coverage options per location/building.
 | `data` | Object | Contains all submitted data plus calculated values |
 | `data.premium_value` | Number | **Calculated premium amount** |
 | `data.total_tax` | Number | **Total applicable taxes/fees** |
+| `data.gl_chargable_premium` | Number | **Premium amount for general_liability and excess_liability** |
+| `data.pl_chargable_premium` | Number | **Premium amount for product_liability** |
+| `date.property_base_cover_premium` | Number | **Premium amount for commercial_property** |
 
 ## Important Notes
 

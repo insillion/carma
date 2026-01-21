@@ -79,6 +79,9 @@ All fields from the original quote can be updated:
 | `data.premium_value` | Number | **Recalculated** premium based on changes |
 | `data.total_tax` | Number | **Recalculated** taxes/fees |
 | `data.total_amount` | String | **Recalculated** total amount |
+| `data.gl_chargable_premium` | Number | **Recalculated** Premium |
+| `data.pl_chargable_premium` | Number | **Recalculated** Premium |
+| `date.property_base_cover_premium` | Number | **Recalculated** Premium |
 
 ---
 
