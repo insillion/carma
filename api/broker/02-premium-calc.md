@@ -28,7 +28,7 @@ Contains applicant/business information.
 | `gnrlinfo_legal_business_name` | String | Yes | Legal registered business name | "Sample Business LLC" |
 | `gnrlinfo_mailing_address` | String | Yes | Full mailing address | "123 Main Street, Fairfield, NJ, United States" |
 | `email` | String | Yes | Contact email address | "john.smith@gmail.com" |
-| `gnrlinfo_fein_number` | String | Yes | Federal Employer Identification Number | "12-3456789" |
+| `gnrlinfo_fein_number` | String | Optional | Federal Employer Identification Number | "12-3456789" |
 | `gnrlinfo_zip_code` | String | Yes | ZIP/Postal code | "07006" |
 | `gnrlinfo_phone_number` | String | Yes | Contact phone number | "(505) 489-9222" |
 
