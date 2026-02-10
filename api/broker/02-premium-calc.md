@@ -49,6 +49,7 @@ Indicates which coverage types are being requested.
 | --- | --- | --- | --- | --- |
 | `gnrlinfo_new_venture` | String | Yes | Is this a new business venture? | "Yes" / "No" |
 | `gnrlinfo_license_status` | String | Yes | Does business have valid license? | "Yes" / "No" |
+| `gnrlinfo_license_number` | String | Optional | Only give the license number if the license status is Yes | "AB12345" |
 | `gnrlinfo_year_established` | String | Yes | Year business was established | "2020" |
 | `policy_start_date` | String | Yes | Desired policy start date (MM-DD-YYYY) | "10-30-2025" |
 | `gnrlinfo_have_previous_insurance` | String | Yes | Has prior insurance coverage? | "Yes" / "No" |
@@ -202,6 +203,7 @@ Array of coverage options per location/building.
 "gnrlinfo_excess_liability": "Yes",
 "gnrlinfo_new_venture": "Yes",
 "gnrlinfo_license_status": "Yes",
+"gnrlinfo_license_number": "AB12345",
 "gnrlinfo_year_established": "2020",
 "policy_start_date": "10-30-2025",
 "gnrlinfo_have_previous_insurance": "Yes",
