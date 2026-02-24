@@ -4,7 +4,7 @@
 **Version:** v1.0  
 **Prepared By:** Insillion    
 **Prepared For:** Carma Insurance        
-**Last Updated:** 05-Jan-2026  
+**Last Updated:** 10-Feb-2026  
 
 ---
 
@@ -67,13 +67,13 @@ For all child arrays (`cultivator_info`, `manufacturing_info`):
 | Field | Type | Required |
 |------|------|----------|
 | gnrlinfo_company_name | string | Yes |
-| gnrlinfo_applicant_contact_name | string | No |
+| gnrlinfo_applicant_contact_name | string | Yes |
 | gnrlinfo_legal_business_name | string | Yes |
-| gnrlinfo_mailing_address | string | No |
+| gnrlinfo_mailing_address | string | Yes |
 | email | string | Yes |
-| gnrlinfo_fein_number | string | Yes |
-| gnrlinfo_zip_code | string | No |
-| gnrlinfo_phone_number | string | Yes |
+| gnrlinfo_fein_number | string | Optional |
+| gnrlinfo_zip_code | string | Yes |
+| gnrlinfo_phone_number | string | Optional |
 
 ---
 
@@ -87,6 +87,7 @@ For all child arrays (`cultivator_info`, `manufacturing_info`):
 | gnrlinfo_excess_liability | string | Conditional | At least one liability coverage must be `"Yes"` |
 | gnrlinfo_new_venture | string | Yes | |
 | gnrlinfo_license_status | string | Yes | |
+| gnrlinfo_license_number | String | Optional | |
 | gnrlinfo_year_established | string | Yes | |
 | policy_start_date | string | No | |
 | gnrlinfo_have_previous_insurance | string | Yes | |
@@ -100,6 +101,7 @@ For all child arrays (`cultivator_info`, `manufacturing_info`):
 |------|------|----------|
 | liability_loc_no | string | Yes |
 | liability_buildingno | string | Yes |
+| liability_loc_address | string | Optional |
 | optype | string | Yes |
 | op_projected_ny_salesrevenue | number | Yes |
 
@@ -115,6 +117,8 @@ For all child arrays (`cultivator_info`, `manufacturing_info`):
 |------|------|----------|
 | cpi_loc_no | string | Yes |
 | cpi_building_no | string | Yes |
+| cpi_street_address | string | Optional |
+| cpi_zipcode | string | Yes |
 | cpi_locwise_optype | string | Yes |
 | cpi_construction_type | string | Yes |
 

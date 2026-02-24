@@ -32,6 +32,13 @@ Contains applicant/business information.
 | `gnrlinfo_zip_code` | String | Yes | ZIP/Postal code | "07006" |
 | `gnrlinfo_phone_number` | String | Yes | Contact phone number | "(505) 489-9222" |
 
+### 1.1. Agency Information
+
+| Field | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `gnrlinfo_agency` | String | Optional | Agency name | "One General Agency" |
+| `gnrlinfo_agent_name` | String | Optional | Agent name from agency | "John Smith" |
+
 ### 2\. Coverage Selection Flags (Root Level)
 
 Indicates which coverage types are being requested.
@@ -63,6 +70,7 @@ Array of location/building operations for liability coverage.
 | --- | --- | --- | --- |
 | `liability_loc_no` | String | Location number | "1" |
 | `liability_buildingno` | String | Building number at location | "1" |
+| `liability_loc_address` | String | Full Location Address | "45 West Street, Fairfield, NJ, United States " |
 | `optype` | String | Type of cannabis operation | "Cultivator for commercial sale" |
 | `op_projected_ny_salesrevenue` | String | Projected next year sales revenue | "800000" |
 
@@ -119,6 +127,8 @@ Array of property locations for Commercial Property Insurance.
 | --- | --- | --- | --- |
 | `cpi_loc_no` | String | Location number | "1" |
 | `cpi_building_no` | String | Building number | "1" |
+| `cpi_street_address` | String | Location Address | "45 West Street, Fairfield, NJ,07004, United States" |
+| `cpi_zipcode` | String | Location Zipcode | "07004" |
 | `cpi_locwise_optype` | String | Operation type at this location | "Cultivator for commercial sale" |
 | `cpi_construction_type` | String | Building construction type | "FRAME" |
 
@@ -187,177 +197,187 @@ Array of coverage options per location/building.
 
 ``` json
 {
- "customer_details": {
-        "gnrlinfo_company_name": "Green Valley Cultivation LLC",
-        "gnrlinfo_applicant_contact_name": "John Smith",
-        "gnrlinfo_legal_business_name": "Sample Business LLC",
-        "gnrlinfo_mailing_address": "123 Main Street, Fairfield, NJ, United States",
-        "email": "john.smith@gmail.com",
-        "gnrlinfo_fein_number": "12-3456789",
-        "gnrlinfo_zip_code": "07006",
-        "gnrlinfo_phone_number": "(505) 489-9222"
- },
-"gnrlinfo_commercial_general_liability": "Yes",
-"gnrlinfo_product_liability": "No",
-"gnrlinfo_commercial_property": "Yes",
-"gnrlinfo_excess_liability": "Yes",
-"gnrlinfo_new_venture": "Yes",
-"gnrlinfo_license_status": "Yes",
-"gnrlinfo_license_number": "AB12345",
-"gnrlinfo_year_established": "2020",
-"policy_start_date": "10-30-2025",
-"gnrlinfo_have_previous_insurance": "Yes",
-"gnrl_info_additional_comments_or_questions": "Sample submission for API integration testing.",
-"operation_type": [
-    {
-        "liability_loc_no": "1",
-        "liability_buildingno": "1",
-        "optype": "Cultivator for commercial sale",
-        "op_projected_ny_salesrevenue": "800000"
-    }
-],
- "cultivator_info": [
-    {
-        "cinfo_loc_no": "1",
-        "cinfo_build_no": "1",
-        "gnrlinfo_type_of_growlight": "LED",
-        "gnrlinfo_how_often_growlight_replace": "Every 24 months",
-        "gnrlinfo_warrant": "2"
-    }
-],
-"manufacturing_info": [
-    {
-        "manfinfo_loc_no": "",
-        "manfinfo_build_no": "",
-        "grnl_info_extraction_method": "",
-        "grnl_info_other_extraction_method": "",
-        "gnrl_info_is_closedloop_extraction": "",
-        "gnrl_info_c1d1room": "",
-        "gnrl_info_non_extraction_process": ""
-    }
-],
-"cpi_location_details": [
-    {
-        "cpi_loc_no": "1",
-        "cpi_building_no": "1",
-        "cpi_locwise_optype": "Cultivator for commercial sale",
-        "cpi_construction_type": "FRAME"
-    }
-],
-"cpi_coverage_details": [
-    {
-        "cpi_cd_locno": "1",
-        "cpi_cd_bdno": "1",
-        "cpi_cd_coverages": "Building Value",
-        "cpi_cd_cover_opted": "Yes",
-        "cpi_cd_suminsured": 250000
-    },
-    {
-        "cpi_cd_locno": "1",
-        "cpi_cd_bdno": "1",
-        "cpi_cd_coverages": "Tenants Improvement & Betterments",
-        "cpi_cd_cover_opted": "Yes",
-        "cpi_cd_suminsured": 50000
-    },
-    {
-        "cpi_cd_locno": "1",
-        "cpi_cd_bdno": "1",
-        "cpi_cd_coverages": "Business Personal Property",
-        "cpi_cd_cover_opted": "No",
-        "cpi_cd_suminsured": 0
-    },
-    {
-        "cpi_cd_locno": "1",
-        "cpi_cd_bdno": "1",
-        "cpi_cd_coverages": "Equipment",
-        "cpi_cd_cover_opted": "No",
-        "cpi_cd_suminsured": 0
-    },
-    {
-        "cpi_cd_locno": "1",
-        "cpi_cd_bdno": "1",
-        "cpi_cd_coverages": "Business Income w/ EE",
-        "cpi_cd_cover_opted": "No",
-        "cpi_cd_suminsured": 0
-    },
-    {
-        "cpi_cd_locno": "1",
-        "cpi_cd_bdno": "1",
-        "cpi_cd_coverages": "Business Income w/o EE",
-        "cpi_cd_cover_opted": "No",
-        "cpi_cd_suminsured": 0
-    },
-    {
-        "cpi_cd_locno": "1",
-        "cpi_cd_bdno": "1",
-        "cpi_cd_coverages": "Finished Stock",
-        "cpi_cd_cover_opted": "No",
-        "cpi_cd_suminsured": 0
-    },        
-    {
-        "cpi_cd_locno": "1",
-        "cpi_cd_bdno": "1",
-        "cpi_cd_coverages": "Flowering Plants",
-        "cpi_cd_cover_opted": "No",
-        "cpi_cd_suminsured": 0
-    },
-    {
-        "cpi_cd_locno": "1",
-        "cpi_cd_bdno": "1",
-        "cpi_cd_coverages": "Goods in Process",
-        "cpi_cd_cover_opted": "No",
-        "cpi_cd_suminsured": 0
-    },
-    {
-        "cpi_cd_locno": "1",
-        "cpi_cd_bdno": "1",
-        "cpi_cd_coverages": "Immature Seedings",
-        "cpi_cd_cover_opted": "No",
-        "cpi_cd_suminsured": 0
-    },
+    "status": 0,
+    "txt": "",
+    "data": {
+        "customer_details": {
+            "email": "john.smith@gmail.com",
+            "gnrlinfo_company_name": "Green Valley Cultivation LLC",
+            "gnrlinfo_applicant_contact_name": "John Smith",
+            "gnrlinfo_legal_business_name": "Sample Business LLC",
+            "gnrlinfo_mailing_address": "123 Main Street, Fairfield, NJ, United States",
+            "gnrlinfo_country": "",
+            "gnrlinfo_state": "New Jersey",
+            "gnrlinfo_city": "Caldwell",
+            "gnrlinfo_zip_code": "07006",
+            "gnrlinfo_phone_number": "(505) 489-9222",
+            "gnrlinfo_fein_number": ""
+        },
+        "gnrlinfo_commercial_general_liability": "Yes",
+        "gnrlinfo_product_liability": "No",
+        "gnrlinfo_commercial_property": "Yes",
+        "gnrlinfo_excess_liability": "Yes",
+        "gnrlinfo_new_venture": "Yes",
+        "gnrlinfo_license_status": "Yes",
+        "gnrlinfo_license_number": "AB12345",
+        "gnrlinfo_year_established": "2020",
+        "policy_start_date": "02-15-2026",
+        "gnrlinfo_have_previous_insurance": "Yes",
+        "gnrl_info_additional_comments_or_questions": "Sample submission for API integration testing.",
+        "gnrlinfo_agency": "Agency name",
+        "gnrlinfo_agent_name": "Agency",
+        "cpi_location_details": [
             {
-        "cpi_cd_locno": "1",
-        "cpi_cd_bdno": "1",
-        "cpi_cd_coverages": "Living Plant",
-        "cpi_cd_cover_opted": "No",
-        "cpi_cd_suminsured": 0
-    },
-    {
-        "cpi_cd_locno": "1",
-        "cpi_cd_bdno": "1",
-        "cpi_cd_coverages": "Loss Payee",
-        "cpi_cd_cover_opted": "No",
-        "cpi_cd_suminsured": 0
-    },
-    {
-        "cpi_cd_locno": "1",
-        "cpi_cd_bdno": "1",
-        "cpi_cd_coverages": "Outdoor Sign",
-        "cpi_cd_cover_opted": "No",
-        "cpi_cd_suminsured": 0
-    },
-    {
-        "cpi_cd_locno": "1",
-        "cpi_cd_bdno": "1",
-        "cpi_cd_coverages": "Pre-Vegetative Plants",
-        "cpi_cd_cover_opted": "No",
-        "cpi_cd_suminsured": 0
-    },
-    {
-        "cpi_cd_locno": "1",
-        "cpi_cd_bdno": "1",
-        "cpi_cd_coverages": "Vegetative Plants",
-        "cpi_cd_cover_opted": "No",
-        "cpi_cd_suminsured": 0
-    },
-    {
-        "cpi_cd_locno": "1",
-        "cpi_cd_bdno": "1",
-        "cpi_cd_coverages": "Personal Property Of Others",
-        "cpi_cd_cover_opted": "No",
-        "cpi_cd_suminsured": 0
+                "cpi_loc_no": "1",
+                "cpi_building_no": "1",
+                "cpi_street_address": "45 West Street, Fairfield, NJ, United States",
+                "cpi_city": "Fairfield",
+                "cpi_state": "New Jersey",
+                "cpi_zipcode": "07004",
+                "cpi_locwise_optype": "Cultivator for commercial sale",
+                "cpi_construction_type": "FRAME"
+            }
+        ],
+        "cpi_coverage_details": [
+            {
+                "cpi_cd_locno": "1",
+                "cpi_cd_bdno": "1",
+                "cpi_cd_coverages": "Building Value",
+                "cpi_cd_cover_opted": "Yes",
+                "cpi_cd_suminsured": 250000
+            },
+            {
+                "cpi_cd_locno": "1",
+                "cpi_cd_bdno": "1",
+                "cpi_cd_coverages": "Tenants Improvement & Betterments",
+                "cpi_cd_cover_opted": "Yes",
+                "cpi_cd_suminsured": 50000
+            },
+            {
+                "cpi_cd_locno": "1",
+                "cpi_cd_bdno": "1",
+                "cpi_cd_coverages": "Business Personal Property",
+                "cpi_cd_cover_opted": "No",
+                "cpi_cd_suminsured": ""
+            },
+            {
+                "cpi_cd_locno": "1",
+                "cpi_cd_bdno": "1",
+                "cpi_cd_coverages": "Equipment",
+                "cpi_cd_cover_opted": "No",
+                "cpi_cd_suminsured": ""
+            },
+            {
+                "cpi_cd_locno": "1",
+                "cpi_cd_bdno": "1",
+                "cpi_cd_coverages": "Business Income w/ EE",
+                "cpi_cd_cover_opted": "No",
+                "cpi_cd_suminsured": ""
+            },
+            {
+                "cpi_cd_locno": "1",
+                "cpi_cd_bdno": "1",
+                "cpi_cd_coverages": "Business Income w/o EE",
+                "cpi_cd_cover_opted": "No",
+                "cpi_cd_suminsured": ""
+            },
+            {
+                "cpi_cd_locno": "1",
+                "cpi_cd_bdno": "1",
+                "cpi_cd_coverages": "Finished Stock",
+                "cpi_cd_cover_opted": "No",
+                "cpi_cd_suminsured": ""
+            },
+            {
+                "cpi_cd_locno": "1",
+                "cpi_cd_bdno": "1",
+                "cpi_cd_coverages": "Flowering Plants",
+                "cpi_cd_cover_opted": "No",
+                "cpi_cd_suminsured": ""
+            },
+            {
+                "cpi_cd_locno": "1",
+                "cpi_cd_bdno": "1",
+                "cpi_cd_coverages": "Goods in Process",
+                "cpi_cd_cover_opted": "No",
+                "cpi_cd_suminsured": ""
+            },
+            {
+                "cpi_cd_locno": "1",
+                "cpi_cd_bdno": "1",
+                "cpi_cd_coverages": "Immature Seedings",
+                "cpi_cd_cover_opted": "No",
+                "cpi_cd_suminsured": ""
+            },
+            {
+                "cpi_cd_locno": "1",
+                "cpi_cd_bdno": "1",
+                "cpi_cd_coverages": "Living Plant",
+                "cpi_cd_cover_opted": "No",
+                "cpi_cd_suminsured": ""
+            },
+            {
+                "cpi_cd_locno": "1",
+                "cpi_cd_bdno": "1",
+                "cpi_cd_coverages": "Loss Payee",
+                "cpi_cd_cover_opted": "No",
+                "cpi_cd_suminsured": ""
+            },
+            {
+                "cpi_cd_locno": "1",
+                "cpi_cd_bdno": "1",
+                "cpi_cd_coverages": "Outdoor Sign",
+                "cpi_cd_cover_opted": "No",
+                "cpi_cd_suminsured": ""
+            },
+            {
+                "cpi_cd_locno": "1",
+                "cpi_cd_bdno": "1",
+                "cpi_cd_coverages": "Pre-Vegetative Plants",
+                "cpi_cd_cover_opted": "No",
+                "cpi_cd_suminsured": ""
+            },
+            {
+                "cpi_cd_locno": "1",
+                "cpi_cd_bdno": "1",
+                "cpi_cd_coverages": "Vegetative Plants",
+                "cpi_cd_cover_opted": "No",
+                "cpi_cd_suminsured": ""
+            },
+            {
+                "cpi_cd_locno": "1",
+                "cpi_cd_bdno": "1",
+                "cpi_cd_coverages": "Personal Property Of Others",
+                "cpi_cd_cover_opted": "No",
+                "cpi_cd_suminsured": ""
+            }
+        ],
+        "operation_type": [
+            {
+                "liability_loc_no": "1",
+                "liability_buildingno": "1",
+                "liability_loc_address": "45 West Street, Fairfield, NJ,07004,United States",
+                "optype": "Cultivator for commercial sale",
+                "op_projected_ny_salesrevenue": "800000"
+            }
+        ],
+        "cultivator_info": [
+            {
+                "cinfo_loc_no": "1",
+                "cinfo_build_no": "1",
+                "gnrlinfo_type_of_growlight": "LED",
+                "gnrlinfo_how_often_growlight_replace": "Every 24 months",
+                "gnrlinfo_warrant": "2"
+            }
+        ],
+        "manufacturing_info": [],
+        "gl_chargable_premium": 1200,
+        "pl_chargable_premium": 0,
+        "property_base_cover_premium": 1800,
+        "total_tax": 500,
+        "premium_value": 3000,
+        "source": "API"
     }
-] 
 }
 
  ```
